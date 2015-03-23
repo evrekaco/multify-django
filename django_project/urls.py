@@ -1,6 +1,10 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 
 from django.contrib import admin
+import multify_app
+import settings
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -9,4 +13,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'', include('multify_app.urls')),
 )
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

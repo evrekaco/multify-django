@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Multify | Client Login</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+<center><img src="{% static 'img/multify_logo_original.png' %}" style="height: 250px; margin-top: 50px;"/></center>
+<div id="tabs" style="width: 400px; margin: 20px auto;">
+    <div id="tabs-1" style="text-align: center;">
+        <form action="{% url 'multify_app.views.client_login' %}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form login_form %}
+            <button type="submit" class="btn btn-red pull-right">Login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
