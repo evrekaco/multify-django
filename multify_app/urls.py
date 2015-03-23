@@ -16,6 +16,9 @@ urlpatterns = patterns('',
     url(r'^get_device_data/(?P<device_id>\w+)/$', 'multify_app.views.get_device_data'),
     url(r'^get_device_data/$', 'multify_app.views.get_device_data'),
     url(r'^get_device_data_raw/(?P<device_id>\w+)/$', 'multify_app.views.get_device_data_raw'),
+    url(r'^get_checkins/$', 'multify_app.views.get_checkins'),
+
+    url(r'^push_welcomer/$', 'multify_app.views.push_welcomer'),
 
 
     url(r'^$', 'multify_app.views.index', name='index'),

@@ -1,7 +1,7 @@
 {% extends "client/base.html" %}
 {% load staticfiles %}
 {% block EXTRA_HEAD %}
-    <link rel="/static/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="{% static "css/jquery.dataTables.css" %}">
 {% endblock EXTRA_HEAD %}
 {% block MAIN_BLOCK %}
 
@@ -63,26 +63,22 @@
             </div>
         </div>
         <div class="col-lg-7">
-            <table id="example" class="display" cellspacing="0" width="100%">
+            <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Extn.</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Surname</th>
+                    <th>Check-in Date</th>
+                    <!--th>Picture Url</th-->
                 </tr>
                 </thead>
 
                 <tfoot>
                 <tr>
                     <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Extn.</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Surname</th>
+                    <th>Check-in Date</th>
+                    <!--th>Picture Url</th-->
                 </tr>
                 </tfoot>
             </table>
@@ -107,14 +103,28 @@
 
 
     <script>
-    $(document).ready(function() {
-    $('#example').dataTable( {
-        "ajax": {
-            "url" : "asd/",
-            "type" : "GET"
-        }
-    } );
-} );
+        $(document).ready(function () {
+            $('#example').dataTable({
+                "ajax": {
+                    "url": "/get_checkins/",
+                    "type": "GET",
+
+                },
+                columns: [
+                    {data: 'name'},
+                    {data: 'surname'},
+                    {data: 'checkin_date'},
+                    /* {data: 'pic_url'}*/
+                ]
+                /*columnDefs: [{
+                    "render" : function (data, type, row) {
+                        return Date.parse(data).toString();
+                    },
+                    "targets": 2
+                }]*/
+            });
+        })
+        ;
     </script>
 
 {% endblock AFTER_JS %}

@@ -5,12 +5,13 @@ from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 import foursquare
 import requests
 # Create your views here.
 from forms import SubscribeForm, ClientLoginForm, MultifyCorrectForm
 from models import Client, Multify, ActivityRecord, Device, CheckinRecord
-import settings
+from  django_project import settings
 
 
 def index(request, form=None):
@@ -185,3 +186,19 @@ def get_device_data_raw(request, device_id = None):
             else:
                 multify = multify[0]
                 return HttpResponse(str(multify.checkin_count))
+
+def get_checkins(request):
+    if request.method == "GET":
+        multify = Multify.objects.filter(client__user=request.user)
+        if len(multify) > 0:
+            multify = multify[0]
+        else:
+            return client_home(request,error="Henuz Multify Kaydiniz yok?")
+        rec = CheckinRecord.objects.filter(multify=multify).order_by('-checkin_date')[:100]
+        response = {"data" : [x.to_dict() for x in rec]}
+        return HttpResponse(json.dumps(response))
+
+@csrf_exempt
+def push_welcomer(request):
+    print request.POST
+    return HttpResponse("Hola")
