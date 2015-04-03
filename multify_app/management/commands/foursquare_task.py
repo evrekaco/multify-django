@@ -45,7 +45,8 @@ class Command(BaseCommand):
                             #stats = fsq_client.venues.stats(multify.client.foursquare_code)
 
                             for visitor in stats["stats"]["recentVisitors"]:
-                                new_rec, created = CheckinRecord.objects.get_or_create(multify=multify, checkin_date=datetime.fromtimestamp(visitor["lastCheckin"]), fsq_id=visitor["user"]["id"].encode('utf-8'))
+                                new_rec, created = CheckinRecord.objects.get_or_create(multify=multify, checkin_date=datetime.fromtimestamp(visitor["lastCheckin"], timezone.get_current_timezone()), fsq_id=visitor["user"]["id"].encode('utf-8'))
+                                # print "RAW DATA:", visitor["lastCheckin"]
                                 if "firstName" in  visitor["user"]:
                                     new_rec.name = visitor["user"]["firstName"]
                                 if "lastName" in  visitor["user"]:
@@ -60,12 +61,14 @@ class Command(BaseCommand):
                                 else:
                                     print "DUPLICATE AVOIDED"
                                 new_rec.save()
+                                # print "NEW_REC:", new_rec.checkin_date, new_rec.checkin_date.timetuple(),int(mktime(new_rec.checkin_date.timetuple())),"\n\n"
                             print "Succesfully accessed and processed data.."
                         except Exception as e:
                             print str(e)
 
                     if changed:
-                        multify.last_updated = timezone.now()
+                        multify.last_updated = datetime.now(tz=timezone.get_current_timezone())
                     multify.save()
-
-            sleep(15)
+                print "\n"
+            print "\n\n"
+            sleep(10)
