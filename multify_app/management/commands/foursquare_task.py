@@ -40,6 +40,8 @@ class Command(BaseCommand):
                         try:
                             print "startAt:", int(mktime(multify.last_updated.timetuple())) , multify.last_updated
                             stats = fsq_client.venues.stats(multify.client.foursquare_code,params={"startAt":int(mktime(multify.last_updated.timetuple()))})
+                            #stats = fsq_client.venues.stats(multify.client.foursquare_code)
+
                             for visitor in stats["stats"]["recentVisitors"]:
                                 new_rec, created = CheckinRecord.objects.get_or_create(multify=multify, checkin_date=datetime.fromtimestamp(visitor["lastCheckin"]), fsq_id=visitor["user"]["id"].encode('utf-8'))
                                 if "firstName" in  visitor["user"]:
