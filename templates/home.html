@@ -25,8 +25,12 @@
         m.parentNode.insertBefore(a, m)
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-59611764-1', 'auto');
-    ga('send', 'pageview');
+    ga('create', 'UA-61496399-1', 'auto');
+    ga('send', 'pageview', {
+        'page': '/home',
+        'title': 'Homepage',
+        'cookieDomain': 'none'
+    });
 
 </script>
 <body>
@@ -216,7 +220,8 @@
             <p class="text-center heading" style="margin-top:25px; margin-bottom:25px">Pre Order</p>
 
             <div class="center-block form-div">
-                <form class="form-horizontal" action="{% url 'multify_app.views.save_subscriber_record' %}" method="post">
+                <form class="form-horizontal" action="{% url 'multify_app.views.save_subscriber_record' %}"
+                      method="post">
                     {% csrf_token %}
                     {% bootstrap_form subscribe_form %}
                     {% buttons %}

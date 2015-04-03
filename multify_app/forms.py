@@ -46,6 +46,7 @@ class ClientLoginForm(forms.Form):
 
 class MultifyCorrectForm(forms.Form):
     corrected_count = forms.IntegerField()
+
     def __init__(self, user, *args, **kwargs):
         super(MultifyCorrectForm, self).__init__(*args, **kwargs)
         self.fields['multify'] = forms.ModelChoiceField(queryset=Multify.objects.filter(client__user=user),empty_label="(Seciniz)")

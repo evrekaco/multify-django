@@ -98,8 +98,9 @@ def multify_correct(request):
             return client_home(request,success="Sayac basariyle guncellendi")
         else:
             return render(request, 'client/correct.html',
-                          {"client": client, "correct_form": MultifyCorrectForm(request.user, request.POST)})
-    return render(request, 'client/correct.html', {"client": client, "correct_form": MultifyCorrectForm(request.user)})
+                          {"client": client, "correct_form": form})
+    else:
+        return render(request, 'client/correct.html', {"client": client, "correct_form": MultifyCorrectForm(request.user)})
 
 
 def foursquare_token_generate(request):
