@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from django.utils import timezone
 from time import sleep, time, mktime
 from django.core.management.base import BaseCommand, CommandError
 from django.core.urlresolvers import reverse
@@ -19,7 +20,7 @@ class Command(BaseCommand):
         list = Multify.objects.all()
         while True:
             for multify in list:
-                self.stdout.write('Current Multify: %s' % str(multify))
+                self.stdout.write('Current Multify Client: %s' % str(multify.client.venue_name))
                 self.stdout.write('Last Checked: %s' % str(multify.last_updated))
                 if multify.client.auth_token:
                     changed = False
@@ -33,12 +34,13 @@ class Command(BaseCommand):
                         multify.unique_users = response["usersCount"]
                         changed = True
 
-                    print response
+                    print "Public data updated..", response
 
 
                     if multify.client.foursquare_code:
+                        print "Trying to access more data using the token of", multify.client.venue_name
                         try:
-                            print "startAt:", int(mktime(multify.last_updated.timetuple())) , multify.last_updated
+                            #print "startAt:", int(mktime(multify.last_updated.timetuple())) , multify.last_updated
                             stats = fsq_client.venues.stats(multify.client.foursquare_code,params={"startAt":int(mktime(multify.last_updated.timetuple()))})
                             #stats = fsq_client.venues.stats(multify.client.foursquare_code)
 
@@ -58,11 +60,12 @@ class Command(BaseCommand):
                                 else:
                                     print "DUPLICATE AVOIDED"
                                 new_rec.save()
+                            print "Succesfully accessed and processed data.."
                         except Exception as e:
                             print str(e)
 
                     if changed:
-                        multify.last_updated = datetime.now()
+                        multify.last_updated = timezone.now()
                     multify.save()
 
-            sleep(10)
+            sleep(15)
