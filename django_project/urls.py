@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 import multify_app
-import settings
+from  django_project import settings
 
 admin.autodiscover()
 

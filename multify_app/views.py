@@ -18,7 +18,7 @@ from models import Client, Multify, ActivityRecord, Device, CheckinRecord, Order
 from  django_project import settings
 
 from django.template.defaultfilters import slugify
-from settings import IYZICO_API_KEY, IYZICO_SECRET, SITE_URL
+from django_project.settings import IYZICO_API_KEY, IYZICO_SECRET, SITE_URL
 from django.utils.translation import gettext_lazy as _
 
 
