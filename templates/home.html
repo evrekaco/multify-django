@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -67,26 +68,54 @@
 
         </div>
         <div class="collapse navbar-collapse" id="collapsing-section">
+            <form action="{% url 'set_language' %}" method="post" style="display: none" id="language_form">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                <select name="language" id="lang_options">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                                selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Go"/>
+            </form>
             <ul class="nav navbar-nav home-nav-bar navbar-right">
-                <li><a href="#" id="deneyim"><p class="banner">Multify Experience</p></a></li>
-                <li><a href="#" id="how-it-works"><p class="banner">How it Works?</p></a></li>
+                <li><a href="#" id="deneyim"><p class="banner">{% trans "Multify Experience" %}</p></a></li>
+                <li><a href="#" id="how-it-works"><p class="banner">{% trans "How it Works?" %}</p></a></li>
                 <li>
                     <button class="btn btn-xs btn-red navbar-btn home-button visible-lg visible-md visible-sm"
-                            id="pre-purchase"><p class="banner">Pre-order</p></button>
-                    <a href="#" id="pre-purchase" class="visible-xs"><p class="banner">Pre-order</p></a>
+                            id="pre-purchase"><p class="banner">{% trans "Order Now" %}</p></button>
+                    <a href="#" id="pre-purchase" class="visible-xs"><p class="banner">{% trans "Order" %}</p></a>
                 </li>
-                <li><a href="#" id="changeLang" onclick="clickLang()"><img src="{% static 'img/tr.png' %}"
-                                                                           id="lang-logo"
-                                                                           class="img-circle visible-lg visible-md visible-sm"
-                                                                           height="31" width="31"/>
 
-                    <p class="banner visible-xs">Türkçe Siteye Geç</p></a></li>
                 <li>
-                    <!--TODO FIX LINKS --->
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == "tr" %}
+                        <a href="#" id="changeLang" onclick="clickLang('en')"><img src="{% static 'img/en.png' %}"
+                                                                                   id="lang-logo"
+                                                                                   class="img-circle visible-lg visible-md visible-sm"
+                                                                                   height="31" width="31"/>
+
+                            <p class="banner visible-xs">Switch to English</p></a></li>
+                    {% else %}
+                        <a href="#" id="changeLang" onclick="clickLang('tr')"><img src="{% static 'img/tr.png' %}"
+                                                                                   id="lang-logo"
+                                                                                   class="img-circle visible-lg visible-md visible-sm"
+                                                                                   height="31" width="31"/>
+
+                            <p class="banner visible-xs">Türkçe Siteye Geç</p></a></li>
+                    {% endif %}
+                <li>
                     <button class="btn btn-xs btn-warning navbar-btn home-button visible-lg visible-md visible-sm"
                             id="login" onclick='window.location="{% url 'client_login' %}"; return false;'><p
-                            class="banner">Log In</p></button>
-                    <a href="{% url 'client_login' %}" id="login" class="visible-xs"><p class="banner">Log In</p></a>
+                            class="banner">{% trans "Log In" %}</p></button>
+                    <a href="{% url 'client_login' %}" id="login" class="visible-xs"><p
+                            class="banner">{% trans "Log In" %}</p></a>
                 </li>
             </ul>
         </div>
@@ -112,7 +141,7 @@
 <div class="container">
     <div class="row" style="margin-top:25px; margin-bottom:25px">
 
-        <h1 class="heading" id="toDeneyim"><b>Multify Experience</b></h1>
+        <h1 class="heading" id="toDeneyim"><b>{% trans "Multify Experience" %}</b></h1>
 
         <div class="col-lg-12" id="first-row">
             <div class="row">
@@ -120,14 +149,12 @@
                     <img src="{% static 'img/multify1.png' %}" class="img-responsive center-block ">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7 vertical-align">
-                    <p class="description">Multify allows you to use your value in social media as a real time marketing
-                        tool by reflecting the value of your place in social media into our lives.</p>
+                    <p class="description">{% trans "Multify allows you to use your value in social media as a real time marketing tool by reflecting the value of your place in social media into our lives." %}</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7 vertical-align">
-                    <p class="description">Multify creates an interactive atmosphere among customers and places. By this
-                        way number of customers and value of your place increase.</p>
+                    <p class="description">{% trans "Multify creates an interactive atmosehere among customers and places. By this way number of customers and value of your place increase." %}</p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 vertical-align">
                     <img src="{% static 'img/2.png' %}" class="img-responsive center-block">
@@ -138,14 +165,12 @@
                     <img src="{% static 'img/multify_gorsel_orta.png' %}" class="center-block img-responsive">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7 vertical-align">
-                    <p class="description">Multify is not only a real time marketing tool but also a fancy thing that
-                        everyone likes on the wall.</p>
+                    <p class="description">{% trans "Multify is not only a real time marketing tool but also a fancy thing that everyone likes on the wall." %}</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-7 vertical-align">
-                    <p class="description">It is not all!!! You can understand your customers better thanks to monthly
-                        analyze reports. This leads you to attract more and more customers than your competitors.</p>
+                    <p class="description">{% trans "It is not all!!! You can understand your customers better thanks to monthly analyze reports. This leads you to attract more and more customers than your competitors." %}</p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 vertical-align">
                     <img src="{% static 'img/4.png' %}" class="img-responsive center-block">
@@ -157,17 +182,17 @@
 
 <div class="container">
     <div class="row" id="how-it-works-row" style="margin-top:25px; margin-bottom:25px">
-        <h1 class="heading" id="toWorks"><b>How It Works?</b></h1>
+        <h1 class="heading" id="toWorks"><b>{% trans "How it works?" %}</b></h1>
 
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <div class="row">
                 <img src="{% static 'img/6.png' %}" class="center-block img-responsive">
             </div>
             <div class="row">
-                <p class="heading-minor"><b>POSITION MULTIFY IN YOUR PLACE</b></p>
+                <p class="heading-minor"><b>{% trans "Position Multify in your place" %}</b></p>
 
                 <div class="subheading2">
-                    <p class="description">Either on the wall or on any desk is a great place for Multify!</p>
+                    <p class="description">{% trans "Either on the wall or on any desk is a great place for Multify!" %}</p>
                 </div>
             </div>
         </div>
@@ -177,7 +202,7 @@
                 <img src="{% static 'img/5.png' %}" class="center-block img-responsive">
             </div>
             <div class="row">
-                <p class="heading-minor"><b>PLUG IN</b></p>
+                <p class="heading-minor"><b>{% trans "PLUG IN" %}</b></p>
             </div>
         </div>
 
@@ -186,10 +211,10 @@
                 <img src="{% static 'img/7.png' %}" class="center-block img-responsive">
             </div>
             <div class="row">
-                <p class="heading-minor"><b>CONNECT TO WI-FI</b></p>
+                <p class="heading-minor"><b>{% trans "CONNECT TO WI-FI" %}</b></p>
 
                 <div class="subheading2">
-                    <p class="description">Wi-Fi Connection is required for data transfer.</p>
+                    <p class="description">{% trans "Wi-Fi Connection is required for data transfer." %}</p>
                 </div>
             </div>
         </div>
@@ -199,7 +224,7 @@
 
 <div class="container-fluid">
     <div class="row" style="margin-top:25px; margin-bottom:25px">
-        <h1 class="heading" id="sizes" style="margin-bottom:50px"><b>TECHNICAL SPECIFICATIONS</b></h1>
+        <h1 class="heading" id="sizes" style="margin-bottom:50px"><b>{% trans "TECHNICAL SPECIFICATIONS" %}</b></h1>
 
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 vertical-align2">
             <img src="{% static 'img/multify_size2.png' %}" class="center-block img-responsive"/>
@@ -214,24 +239,9 @@
 
 <div class="container" style="margin-top:25px; margin-bottom:25px">
     <div class="row">
-
-        <div class="subheading" id="toPurchase">
-
-            <p class="text-center heading" style="margin-top:25px; margin-bottom:25px">Pre Order</p>
-
-            <div class="center-block form-div">
-                <form class="form-horizontal" action="{% url 'multify_app.views.save_subscriber_record' %}"
-                      method="post">
-                    {% csrf_token %}
-                    {% bootstrap_form subscribe_form %}
-                    {% buttons %}
-                        <button type="submit" class="btn btn-default btn-red">Submit</button>
-                    {% endbuttons %}
-                </form>
-
-            </div>
-
-
+        <div id="toPurchase">
+            <a href="{% url "multify_app.views.order_form" %}" class="btn btn-default btn-lg btn-red center-block"
+               style="width: 40%"><p style="font-size: xx-large">{% trans "Order Now!" %}</p></a>
         </div>
 
     </div>
@@ -239,24 +249,16 @@
 
 <div class="container" style="margin-bottom: 20px">
     <div class="row">
-        <div class="subheading">
-            <p class="text-center" style="margin-top: 50px;">Subscribe to get informed about Multify.</p>
+        <div>
+            <h3 class="text-center"
+                style="margin-top: 50px;">{% trans "Contact us to get informed about Multify!" %}</h3>
 
             <div class="center-block form-div">
-                <form class="form-horizontal" action="subscribe.php" method="post">
-                    <div class="form-group" style="margin: 5px auto;">
-                        <label for="email" class="col-sm-2 control-label">E-mail</label>
-
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="email" placeholder="E-mail" name="email"
-                                   required/>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin: 5px auto;">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-red pull-right">Register</button>
-                        </div>
-                    </div>
+                <form class="form-horizontal" action="{% url "multify_app.views.save_subscriber_record" %}"
+                      method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form subscribe_form %}
+                    <button type="submit" class="btn btn-red pull-right">{% trans "Submit" %}</button>
                 </form>
             </div>
         </div>
@@ -287,7 +289,7 @@
                     <strong>Multify</strong>
                 </li>
                 <li>
-                    <a href="#" data-toggle="modal" data-target="#sozlesmeModal">Terms of Service</a>
+                    <a href="#" data-toggle="modal" data-target="#sozlesmeModal">{% trans "Terms of Service" %}</a>
                 </li>
                 </ul>
             </div>
@@ -460,8 +462,9 @@
             scrollTop: $("#banner").offset().top
         }, 2000);
     });
-    function clickLang() {
-        window.location = "index.php";
+    function clickLang(code) {
+        $('[name=language]').val(code);
+        $("#language_form").submit();
     }
 
     var swiper = new Swiper('.swiper-container', {

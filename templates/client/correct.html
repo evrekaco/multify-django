@@ -1,6 +1,6 @@
 {% extends "client/base.html" %}
 {% load bootstrap3 %}
-
+{% load i18n %}
 {% block MAIN_BLOCK %}
 
 
@@ -9,7 +9,7 @@
         <form action="{% url 'multify_app.views.multify_correct' %}" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form correct_form %}
-            <button type="submit" class="btn btn-red pull-right">Apply</button>
+            <button type="submit" class="btn btn-red pull-right">{% trans "Apply" %}</button>
         </form>
     </div>
 {% endblock MAIN_BLOCK %}

@@ -1,11 +1,11 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
-
+{% load i18n %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Multify | Client Login</title>
+    <title>Multify | {% trans "Client Login" %}</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -17,7 +17,7 @@
         <form action="{% url 'multify_app.views.client_login' %}" method="post" class="form">
             {% csrf_token %}
             {% bootstrap_form login_form %}
-            <button type="submit" class="btn btn-red pull-right">Login</button>
+            <button type="submit" class="btn btn-red pull-right">{% trans "Log In" %}</button>
         </form>
     </div>
 </div>

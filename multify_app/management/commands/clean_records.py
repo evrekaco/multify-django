@@ -13,5 +13,5 @@ class Command(BaseCommand):
         list = Multify.objects.all()
         CheckinRecord.objects.all().delete()
         for multify in list:
-            multify.last_updated = datetime(2014, 1, 1)
+            multify.last_updated = datetime(2013, 1, 1)
             multify.save()

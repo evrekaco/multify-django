@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from models import FoursquareApp, Client, Device, SubscribeEmail, Multify, Subscriber, ActivityRecord, CheckinRecord
+from models import FoursquareApp, Client, Device, Multify, Subscriber, ActivityRecord, CheckinRecord,MultifyOrder,OrderShipmentPrice
 
 
 class CustomModelAdminMixin(object):
@@ -26,10 +26,6 @@ class DeviceAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     pass
 
 
-@admin.register(SubscribeEmail)
-class SubscriberEmailAdmin(CustomModelAdminMixin, admin.ModelAdmin):
-    pass
-
 
 @admin.register(Subscriber)
 class SubscriberAdmin(CustomModelAdminMixin, admin.ModelAdmin):
@@ -50,3 +46,10 @@ class CheckinRecordAdmin(CustomModelAdminMixin, admin.ModelAdmin):
     pass
 
 
+@admin.register(MultifyOrder)
+class CheckinRecordAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    pass
+
+@admin.register(OrderShipmentPrice)
+class CheckinRecordAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    pass

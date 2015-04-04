@@ -1,10 +1,11 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Multify | Client Panel</title>
+    <title>Multify | {% trans "Client Panel" %}</title>
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     {% block EXTRA_HEAD %}
@@ -14,32 +15,64 @@
 <div id="header" style="background-color: #1a1a1a; padding: 20px;">
     <img src="{% static 'img/multify_logo_original_white.png' %}" style="width: auto; height: 75px; margin: 10px;"/>
     <span class="glyphicon glyphicon-user" aria-hidden="true" style="color: #ffffff;"></span><span
-        style="color: #ffffff; margin-left: 5px;">Hoşgeldin, {{ user.get_full_name|default:user.username }}</span>
+        style="color: #ffffff; margin-left: 5px;">{% trans "Welcome" %}, {{ user.get_full_name|default:user.username }}</span>
 </div>
 <div class="btn-group btn-group-justified" role="group" aria-label="">
     <div class="btn-group" role="group">
         <a href="{% url 'multify_app.views.client_home' %}" type="button" class="btn btn-default"><span
                 class="glyphicon glyphicon-pencil"
-                aria-hidden="true"></span> Profil
+                aria-hidden="true"></span> {% trans "Profile" %}
         </a>
     </div>
     <div class="btn-group" role="group">
         <a href="{% url 'multify_app.views.multify_correct' %}" type="button" class="btn btn-default"><span
-                class="glyphicon glyphicon-pencil"
-                aria-hidden="true"></span> Multify'ımı
-            Doğrula
+                class="glyphicon glyphicon-wrench"
+                aria-hidden="true"></span> {% trans "Correct My Multify" %}
         </a>
     </div>
     <div class="btn-group" role="group">
-        <a href="{% url 'multify_app.views.foursquare_token_generate' %}" type="button" class="btn btn-default" id="logout"><span
-                class="glyphicon glyphicon-off"
-                aria-hidden="true"></span> Foursquare Token ReGenerate
+        <a href="{% url 'multify_app.views.foursquare_token_generate' %}" type="button" class="btn btn-default"
+           id="logout"><span
+                class="glyphicon glyphicon-link"
+                aria-hidden="true"></span> {% trans "Regenerate Foursquare Token" %}
         </a>
+    </div>
+    <div class="btn-group" role="group">
+
+        <form action="{% url 'set_language' %}" method="post" style="display: none" id="language_form">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}"/>
+            <select name="language" id="lang_options">
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                            selected="selected"{% endif %}>
+                        {{ language.name_local }} ({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Go"/>
+        </form>
+        <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button"
+           aria-expanded="false">{% trans "Change Language" %}
+            <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+                <li><a href="#"
+                       onclick="clickLang('{{ language.code }}'); return false;">{{ language.name_local }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="btn-group" role="group">
         <a href="{% url 'django.contrib.auth.views.logout' %}" type="button" class="btn btn-default" id="logout"><span
                 class="glyphicon glyphicon-off"
-                aria-hidden="true"></span> Çıkış
+                aria-hidden="true"></span> {% trans "Log Out" %}
         </a>
     </div>
 </div>
@@ -54,6 +87,12 @@
 <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+<script>
+    function clickLang(code) {
+        $('[name=language]').val(code);
+        $("#language_form").submit();
+    }
+</script>
 {% block AFTER_JS %}
 {% endblock AFTER_JS %}
 

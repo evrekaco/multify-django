@@ -20,6 +20,9 @@ urlpatterns = patterns('',
 
     url(r'^push_welcomer/$', 'multify_app.views.push_welcomer'),
 
+    url(r'^order/$', 'multify_app.views.order_form'),
+    url(r'^after_payment/$', 'multify_app.views.after_payment_page'),
+
 
     url(r'^$', 'multify_app.views.index', name='index'),
 
