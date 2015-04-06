@@ -22,9 +22,9 @@ class Command(BaseCommand):
             for multify in list:
                 self.stdout.write('Current Multify Client: %s' % str(multify.client.venue_name))
                 self.stdout.write('Last Checked: %s' % str(multify.last_updated))
-                if multify.client.auth_token:
+                if multify.client.foursquare_code:
                     changed = False
-                    fsq_client = foursquare.Foursquare(access_token=multify.client.auth_token)
+                    fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
                     response = fsq_client.venues(multify.client.foursquare_code)["venue"]["stats"]
 
                     if "checkinsCount" in response:
@@ -36,8 +36,9 @@ class Command(BaseCommand):
 
                     print "Public data updated..", response
 
-
-                    if multify.client.foursquare_code:
+                    print "Now testing for AUTH requests.."
+                    if multify.client.auth_token:
+                        fsq_client = foursquare.Foursquare(access_token=multify.client.auth_token)
                         print "Trying to access more data using the token of", multify.client.venue_name
                         try:
                             #print "startAt:", int(mktime(multify.last_updated.timetuple())) , multify.last_updated

@@ -19,7 +19,7 @@ from  django_project import settings
 
 from django.template.defaultfilters import slugify
 from django_project.settings import IYZICO_API_KEY, IYZICO_SECRET, SITE_URL
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 
 
 
@@ -76,7 +76,8 @@ def client_home(request, error=None, success=None):
     if request.user.is_staff:
         return redirect("/admin")
     try:
-        client = Client.objects.get(user=request.user)
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        client = Client.objects.get(user=user)
     except:
         return index(request)
     return render(request, 'client/home.html', {"client": client, "error": error, "success": success})
@@ -90,12 +91,14 @@ def multify_correct(request):
         return redirect("/admin")
 
     try:
-        client = Client.objects.get(user=request.user)
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        client = Client.objects.get(user__pk=user.pk)
     except:
         return index(request)
 
     if request.method == "POST":
-        form = MultifyCorrectForm(request.user, request.POST)
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        form = MultifyCorrectForm(user, request.POST)
         if form.is_valid():
             try:
                 url = "https://api.spark.io/v1/devices/%s/Changer" % form.cleaned_data['multify'].device.device_id
@@ -116,8 +119,9 @@ def multify_correct(request):
             return render(request, 'client/correct.html',
                           {"client": client, "correct_form": form})
     else:
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
         return render(request, 'client/correct.html',
-                      {"client": client, "correct_form": MultifyCorrectForm(request.user)})
+                      {"client": client, "correct_form": MultifyCorrectForm(user)})
 
 
 def foursquare_token_generate(request):
@@ -127,7 +131,8 @@ def foursquare_token_generate(request):
         return redirect("/admin")
 
     try:
-        multify = Multify.objects.filter(client__user=request.user)
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        multify = Multify.objects.filter(client__user=user)
         if len(multify) > 0:
             multify = multify[0]
     except:
@@ -149,7 +154,9 @@ def foursquare_token_generate(request):
 
 def after_fsq_auth(request):
     if request.method == "GET":
-        multify = Multify.objects.filter(client__user=request.user)
+        print request.user
+        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        multify = Multify.objects.filter(client__user=user)
         if len(multify) > 0:
             multify = multify[0]
         else:
@@ -220,7 +227,7 @@ def get_checkins(request):
             multify = multify[0]
         else:
             return client_home(request, error="Henuz Multify Kaydiniz yok?")
-        rec = CheckinRecord.objects.filter(multify=multify).order_by('-checkin_date')[:100]
+        rec = CheckinRecord.objects.filter(multify=multify).order_by('-checkin_date')[:10]
         response = {"data": [x.to_dict(multify.checkin_count-idx) for idx,x in enumerate(rec)]}
         return HttpResponse(json.dumps(response))
 
@@ -325,14 +332,14 @@ def after_payment_page(request):
                 order.payment_done = True
                 order.save()
 
-                try:
-                    email = EmailMessage('Order Successful', 'Payment successfully, from ' + order.first_name + " " + order.last_name, to=['akcoraberkay@gmail.com'])
-                    email.send()
-
-                    email = EmailMessage('Order Successful - Odeme Basarili', 'Thank you, ' + order.first_name + " " + order.last_name +"\nYour Transaction ID is: " + order.transaction_id, to=[order.contact_email])
-                    email.send()
-                except Exception:
-                    pass
+                # try:
+                #     email = EmailMessage('Order Successful', 'Payment successfully, from ' + order.first_name + " " + order.last_name, to=['akcoraberkay@gmail.com'])
+                #     email.send()
+                #
+                #     email = EmailMessage('Order Successful - Odeme Basarili', 'Thank you, ' + order.first_name + " " + order.last_name +"\nYour Transaction ID is: " + order.transaction_id, to=[order.contact_email])
+                #     email.send()
+                # except Exception:
+                #     pass
 
                 return render(request, "success.html")
             else:

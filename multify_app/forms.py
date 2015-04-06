@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from models import Subscriber, Multify, MultifyOrder
 
 from django import forms
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 
 
 class SubscribeForm(forms.ModelForm):
@@ -46,6 +46,7 @@ class MultifyCorrectForm(forms.Form):
     corrected_count = forms.IntegerField(label=_("Number seen on Multify"))
     def __init__(self, user, *args, **kwargs):
         super(MultifyCorrectForm, self).__init__(*args, **kwargs)
+        user = user._wrapped if hasattr(user,'_wrapped') else user
         self.fields['multify'].queryset = Multify.objects.filter(client__user=user)
 
 

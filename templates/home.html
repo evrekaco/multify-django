@@ -11,7 +11,21 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        #map-canvas {
+            width: 500px;
+            height: 400px;
+        }
 
+        #map-canvas img {
+            max-width: none;
+        }
+
+        #map-canvas label {
+            width: auto;
+            display: inline;
+        }
+    </style>
 </head>
 <script>
     (function (i, s, o, g, r, a, m) {
@@ -284,150 +298,1103 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <ul class="list-unstyled"
-                <li>
-                    <strong>Multify</strong>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#sozlesmeModal">{% trans "Terms of Service" %}</a>
-                </li>
+                <ul class="list-unstyled">
+                    <li>
+                        <strong>Multify</strong>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#sozlesmeModal">{% trans "Terms of Service" %}</a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#gizlilikModal">{% trans "Privacy Policy" %}</a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal"
+                           data-target="#teslimModal">{% trans "Shipment and Returns" %}</a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal"
+                           data-target="#hakkimizda">{% trans "About" %}</a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="modal"
+                           data-target="#contactModal">{% trans "Contact Us" %}</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="sozlesmeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+{% get_current_language as LANGUAGE_CODE %}
+{% if LANGUAGE_CODE == "tr" %}
+    <div class="modal fade" id="sozlesmeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" id="myModalLabel">Mesafeli Satış Sözleşmesi</h2>
+                </div>
+                <div class="modal-body">
+                    <p align="center">
+                        <strong>MESAFELİ SATIŞ SÖZLEŞMESİ</strong>
+                    </p>
+
+                    <p>
+                        İnternet sitemize üye olan ve alış veriş yapan her müşteri, tarafımızdan düzenlenmiş olan
+                        aşağıdaki satış sözleşmemizin tüm maddelerini başka bir ihbara
+                        gerek kalmadan okumuş ve kabul etmiş sayılır.
+                    </p>
+
+                    <p>
+                        İş bu sözleşme 13.06.2003 tarih ve 25137 sayılı Resmi Gazetede yayınlanan Mesafeli Sözleşmeler
+                        Uygulama Usul ve Esasları Hakkında Yönetmelik gereği
+                        internet üzerinden gerçekleştiren satışlar için sözleşme yapılması zorunluluğuna istinaden
+                        düzenlenmiş olup, maddeler halinde aşağıdaki gibidir.
+                    </p>
+
+                    <p>
+                        <strong>Madde 1. KONU</strong>
+                    </p>
+
+                    <p>
+                        Multify’ın internet sitesinde (www.multify.co) elektronik ortamda özellikleri ve fiyatı
+                        belirtilen sözleşme konusu ürünlerin satışı ve yurt içinde alıcıya
+                        teslimi ile ilgili tarafların hak ve yükümlülükleri bu sözleşmenin konusunu oluşturmaktadır.
+                    </p>
+
+                    <p>
+                        <strong>Madde 2. SATIŞ VE TESLİMAT</strong>
+                    </p>
+
+                    <p>
+                        2.1. Teslimat, satıcı firma tarafından kargo aracılığı ile müşterinin belirttiği teslimat
+                        adresine sipariş onaylandıktan sonra 30 iş günü içinde
+                        yapılacaktır.
+                    </p>
+
+                    <p>
+                        2.2. Resmi tatiller ve dini/milli bayram günleri bu süreden sayılmaz. Teslimat sırasında kargo
+                        görevlisi aracılığıyla ürünü teslim aldım ibaresine atılan
+                        imza; alıcı ürünü muayene edip, ürünü tam eksiksiz ve hasarsız olarak teslim aldığını kabul
+                        ettiğini gösterir. Kargo veya kuryeye herhangi bir nakliye
+                        ücreti ödenmeyecektir.
+                    </p>
+
+                    <p>
+                        2.3. Ürünün kiralanması durumunda ürün için bir depozito ücreti alma hakkını EVREKA YAZILIM
+                        DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ kendinde
+                        saklı tutar. Ürünün kiralama süreci bittiği zaman ürün satıcı firmaya geri gönderildiğinde
+                        ürünün üzerinde herhangi bir sorun olduğu durumda, satıcı firma
+                        satış sırasında almış olduğu kullanıcı hesap bilgileri üzerinden 500 (beş yüz) Türk Lirasına
+                        kadar bir ücret tahsisi yapabilir.
+                    </p>
+
+                    <p>
+                        <strong>Madde 3. ÜRÜN VE HİZMETİ</strong>
+                    </p>
+
+                    <p>
+                        3.1. Multify cihazları, EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ
+                        tarafından geliştirilmiş bir üründür. İşletmelerin sosyal
+                        medyadaki (Swarm) check-in sayılarını gerçek hayatta, mekanik sayacında veya dijital ekranında
+                        gösteren bir alettir.
+                    </p>
+
+                    <p>
+                        3.2. Multify, işletmede bulunan kablosuz internet altyapısını kullanarak bulut tabanlı sisteme
+                        erişerek işletmenin swarm üzerindeki “check-in” sayısına
+                        ulaşır ve bulut tabanlı sistemden gelen komutları kablosuz olarak mekanik sayacına ve ekranına
+                        yansıtır.
+                    </p>
+
+                    <p>
+                        3.3. Multify, Foursquare ve Swarm üzerinden gelen verileri depolayan, aynı zamanda üyelerden
+                        gelen yönergelere göre çeşitli algoritmaların kullanımı ile
+                        kullanıcılarına belli raporlar sunabilen bir üründür.
+                    </p>
+
+                    <p>
+                        3.4. Multify adlı ürünün sorunsuz çalışabilmesi için işletmede gerekli kablosuz internet ağı ve
+                        elektrik bağlantısı olması gereklidir. İşletmede bulunan
+                        kablosuz internet ağının ise “Captive Portal” ismiyle anlatılan bir ağ olmaması gerekmektedir.
+                        “Captive Portal” (Doruknet Wispotter, TTNET Wifi) internete
+                        girmek istediğinizde karşınıza çıkan ve internete girebilmeniz için sayfaya kayıt olmanızı
+                        isteyen yapının ismidir.
+                    </p>
+
+                    <p>
+                        3.5. Multify’ı kullanmadan önce Multify Cihazları ile birlikte gelen veya internet sitesinden
+                        temin edebileceğiniz kullanım kılavuzunu okuyup, tüm
+                        talimatları izleyin.
+                    </p>
+
+                    <p>
+                        3.6. Multify’ın kullanımı için gerekli teknik gereksinimler www.multify.co internet sitesinin
+                        Sıkça Sorulan Sorular (S.S.S) bölümünde listelenmiştir.
+                        Üyelik ve satın alma işlemlerini tamamlamadan önce kullanıcının bu gereksinimleri karşılayıp
+                        karşılayamayacağını kontrol etmesi kendi sorumluluğundadır.
+                    </p>
+
+                    <p>
+                        3.7. Multify’ın kullanımı için kullanıcıların www.multify.co internet sitesinden üyelik
+                        oluşturmaları ve tüm kullanıcıların tek tek üyelik sözleşmesinin
+                        koşullarını kabul etmeleri gerekmektedir. (Multify’ı kullanan alıcılar “kullanıcı” olarak
+                        anılacaktır.)
+                    </p>
+
+                    <p>
+                        3.8. Multify güvenlik veya iyileştirme gerekliliklerinden Multify cihazlarında uzaktan yazılım
+                        güncellemesi yapabilir.
+                    </p>
+
+                    <p>
+                        3.9. Ürün’ün işletmeye yerleştirilme hizmetleri, ürünün bir parçası değildir.
+                    </p>
+
+                    <p>
+                        3.10. Müşteri ürünün işletmeye yerleştirilmesi konusunda hizmet satın almak istiyorsa bunu
+                        üretici veya satıcı firma ile görüşmelidir.
+                    </p>
+
+                    <p>
+                        <strong>Madde 4. – CAYMA HAKKI</strong>
+                    </p>
+
+                    <p>
+                        4.1. Alıcı ürünü teslim aldığı tarihten itibaren 7 (yedi) gün içerisinde; yazılı olarak ileterek
+                        herhangi bir gerekçe göstermeksizin ve cezai şart
+                        ödemeksizin sözleşmeden cayma hakkına sahiptir.
+                    </p>
+
+                    <p>
+                        4.2. Cayma hakkının kullanıldığına dair bildirimin 7 (yedi) gün içerisinde EVREKA YAZILIM
+                        DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ’ne
+                        yöneltilmiş olması yeterlidir. Cayma süresi içinde EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM
+                        SANAYİ VE LİMİTED ŞİRKETİ sözleşmeye konu mal veya hizmet
+                        karşılığında alıcıdan herhangi bir isim altında ödeme yapmasını veya alıcıyı borç altına sokan
+                        herhangi bir belge vermesini isteyemez. Alıcı, cayma süresi
+                        içinde malın mutat kullanımı sebebiyle meydana gelen değişiklik ve bozulmalardan sorumlu
+                        değildir.
+                    </p>
+
+                    <p>
+                        4.3. Teslim alınmış olan ürünün değerinin azalması veya iadeyi imkânsız kılan bir nedenin
+                        varlığı cayma hakkının kullanılmasına engel değildir. Ancak değer
+                        azalması veya iadenin imkânsızlaşması alıcı kusurundan kaynaklanıyorsa, alıcı EVREKA YAZILIM
+                        DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ’ne ürünün
+                        değerini veya değerindeki azalmayı tazmin etmesi gerekir.
+                    </p>
+
+                    <p>
+                        <strong>Madde 5. – TARAFLARIN YÜKÜMLÜLÜKLERİ VE GENEL ŞARTLAR</strong>
+                    </p>
+
+                    <p>
+                        5.1. Alıcı satın aldığı ürünün teslimatının süresinde ve doğru şekilde yapılması için, ödeme
+                        işlemlerini internet sitesinde verilen bilgilere göre
+                        gerçekleştirerek teslimata ilişkin adres ve kişi bilgilerini doğru ve eksiksiz olarak
+                        bildirdiğini beyan ve kabul etmiştir.
+                    </p>
+
+                    <p>
+                        5.2. Alıcı, www.multify.co internet sitesinde satışı yapılan ürüne ait yine www.multify.co
+                        internet sitesi’nde belirtilen temel özellikleri, tüm vergiler
+                        dahil satış fiyatı, ödeme şekli ve teslimata ilişkin ön bilgileri okuyup bilgi sahibi olduğunu
+                        ve elektronik ortamda bu hususları kabul ettiğine dair
+                        teyidi verdiğini beyan ve kabul eder.
+                    </p>
+
+                    <p>
+                        5.3. Ürünün kiralanmadığı ve direk satın alındığı durumda, satıcı ve üretici firma kullanıcıya 6
+                        ay süreli bir garanti hizmeti sunmak ile yükümlüdür.
+                    </p>
+
+                    <p>
+                        5.4. Alıcı, teslim edilecek adres ve kişi olarak kendisinden başka bir kişi veya kuruluşu
+                        göstermiş ise bu kişi veya kuruluşun teslimatı kabul etmemesinden
+                        EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ sorumlu tutulamaz.
+                    </p>
+
+                    <p>
+                        5.5. EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ sözleşme konusu ürünün
+                        sağlam, eksiksiz, siparişte belirtilen niteliklere uygun ve
+                        varsa garanti belgeleri ve kullanım kılavuzları ile teslim edilmesinden sorumludur.
+                    </p>
+
+                    <p>
+                        5.6. EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ, hava muhalefeti, genel
+                        grev, ulaşımın kesilmesi gibi mücbir sebeplerle ancak
+                        bunlarla sınırlı olmamak üzere sözleşme konusu ürünün tesliminin imkansızlaşması sonucu
+                        yükümlülüklerini yerine getiremiyorsa, bu durumu alıcıya bildirmek
+                        zorundadır.
+                    </p>
+
+                    <p>
+                        5.7. Multify adlı ürünün kullanım süresi boyunca ürün üzerinde, üründen kaynaklanan yani
+                        kullanıcının kullanım hatasından kaynaklanmayan sorunların çözümü
+                        için, ürünü üretici firmaya kargo ile göndermek ile yükümlüdür. Kargo ücreti müşterinin
+                        sorumluluğu altındadır. Üretici firma, yukarda ifade edildiği gibi
+                        ürün üzerinde kullanım hatasından kaynaklanmayan bir sorun olduğu durumda, ürünü 30 takvim günü
+                        içerisinde tamir etmek veya değiştirmek ile sorumludur.
+                    </p>
+
+                    <p>
+                        5.8. Alıcı satın aldığı ürün/ürünler, bedelinin eksiksiz ödenmiş olması kaydıyla, alıcının
+                        teslimatın yapılmasını istediği adrese sipariş onayından
+                        itibaren 30 (otuz) günlük yasal süresi içinde teslim edilir.
+                    </p>
+
+                    <p>
+                        İşbu sözleşme sipariş verildiği tarihte akdedilmiştir. Alıcı sipariş vermeden önce
+                        www.multify.co internet sitesinde, gerekse sipariş verdikten sonra iş bu
+                        sözleşmeyi okuduğunu, içerdiği tüm bilgi ve koşulları kabul ettiğini kabul, beyan ve taahhüt
+                        etmiştir.
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="hakkimizda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" id="myModalLabel">Hakkımızda</h2>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p align="center">
+                            Sosyal medyanın gücüne inanıyoruz.
+                        </p>
+
+                        <p align="center">
+                            Amacımız, sosyal medyadaki değeri sokağa yansıtmak ve bu değeri insanlara erişilebilir
+                            kılarak katma değer yaratmak.
+                        </p>
+                        <img src="{% static "img/about.jpg" %}" class="center-block img-responsive">
+
+                        <p align="center">
+                            7 kişiden oluşan ekibimiz, ilgisini Multify’ı mekanların, organizasyonların ve insanların
+                            ihtiyaçlarına göre geliştirmeye adamaktadır.
+                        </p>
+                    </div>
+                    <br clear="all"/>
+
+                    <div>
+                        <p align="center">
+                            Berkay Akçora
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Sales &amp; Marketing
+                        </p>
+
+                        <p align="center">
+                            Mert Barutçu
+                        </p>
+
+                        <p align="center">
+                            Co-founder – IT Supervisor
+                        </p>
+
+                        <p align="center">
+                            Umutcan Duman
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Business Analyst
+                        </p>
+
+                        <p align="center">
+                            Mehmet Pancaroğlu
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Business Analyst
+                        </p>
+
+                        <p align="center">
+                            Alev Sönmez
+                        </p>
+
+                        <p align="center">
+                            Designer Specialist
+                        </p>
+
+                        <p align="center">
+                            Cem Aydın
+                        </p>
+
+                        <p align="center">
+                            Software Engineer
+                        </p>
+                    </div>
+                    <br clear="all"/>
+
+                    <p align="center">
+                        Gökçen Nurlu
+                    </p>
+
+                    <p align="center">
+                        Software Engineer
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <div class="modal fade" id="sozlesmeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" id="myModalLabel">Terms of Service</h2></div>
+                <div class="modal-body">
+                    <p>
+                        <strong>1. Purposes</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        The purpose of these general sales conditions are, on the one hand, to inform any potential
+                        customer of the terms and conditions under which the seller
+                        sells and delivers the products ordered and, on the other hand, to set out the rights and
+                        obligations of the parties within the framework of the sale of
+                        the products by the seller to the customer. They apply, without restriction or reservation, to
+                        all products offered by EVREKA Tech. Co. on its Internet
+                        website.   Accordingly, the fact of ordering any product offered for sale on the Multify
+                        Internet website implies the full and complete acceptance of these
+                        general sales conditions by the Buyer, who declares having had prior knowledge of them before
+                        placing his order.   These products are offered for sale
+                        within the following geographic area: 28 countries of the European Union, Norway, Switzerland,
+                        United-States.   The Buyer declares, prior to placing an
+                        order, that: - he is legally able to commit himself with regard to these general sales
+                        conditions.   The company reserves the right to change these general
+                        sales conditions at any time.
+                    </p>
+
+                    <p>
+                        <strong>2. Identity of the Company and Product</strong>
+                    </p>
+
+                    <p>
+                        In Turkish Documentation, The company that is selling the product called “Multify” is called
+                        Evreka Yazılım Donanım Danışmanlık Eğitim Sanayi ve Ticaret
+                        Limited Şirketi . In English documentation, it will be said Evreka Tech. Co. for the company
+                        that is selling “Multify”. Evreka Tech. Co. markets electronic
+                        products for connection to the Internet and the services associated with these products. E-mail:
+                        info@multify.com
+                    </p>
+
+                    <p>
+                        <strong>3. Website Access  </strong>
+                    </p>
+
+                    <p>
+                        The Buyer makes it his personal business to put in place the necessary computer and
+                        communications facilities to enable him to access the Multify website.
+                          The Buyer shall bear the telecommunications costs whenever accessing the Internet and using
+                        the website.
+                    </p>
+
+                    <p>
+                        <strong>4. Formation of the Contract and Orders</strong>
+                    </p>
+
+                    <p>
+                        <strong>4.1. Prices   Online product</strong>
+                    </p>
+
+                    <p>
+                        Prices available on the Multify Internet website, given in Euros and Dollars, are those in force
+                        at the moment the Buyer's order is registered. Product
+                        prices may be changed by Evreka Tech. Co. at any time. The Buyer will be informed of any changes
+                        before any order is confirmed.
+                    </p>
+
+                    <p>
+                        Prices do not include delivery charges, which are invoiced separately, the amount depending upon
+                        the destination of the order. The delivery charges are
+                        shown prior to the registration of the Buyer's order.   The prices doesn’t include value-added
+                        tax (VAT). The value-added tax are shown prior to the
+                        registration of the Buyer's order at the rate applicable on the day of the order. Any change in
+                        the applicable rate will automatically be applied to the
+                        order by Evreka Tech. Co. on its website.
+                    </p>
+
+                    <p>
+                        The invoice for the products will be created as soon as the product will be shipped by Evreka
+                        Tech Co. .
+                    </p>
+
+                    <p>
+                        The Buyer will receive a proof of his payment by email as soon as his order will be confirmed by
+                        Evreka Tech. Co. .
+                    </p>
+
+                    <p>
+                        <strong>4.2. Product specifications</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        The Buyer may, prior to placing his order, consult the Multify website, www.multify.co, in order
+                        to be aware of the basic specifications of the product(s)
+                        that he wishes to order, prior to placing his order.
+                        <br/>
+                        <br/>
+                        <br/>
+                        <strong>4.3. Order</strong>
+                    </p>
+
+                    <p>
+                        Any order implies acceptance, without restriction or prejudice, of these general sales
+                        conditions.   From the moment that the Buyer has registered his
+                        order by clicking on the tab “Confirm order”, he is considered as having made an informed
+                        decision and having accepted without prejudice these general
+                        sales conditions, the prices, volumes and quantities of the products offered for sale and
+                        ordered. <strong>  </strong> <strong>The Buyer's order must be confirmed by Evreka Tech. Co. ,
+                        by e-mail.</strong>   The sale shall not be considered as final until after the Buyer has
+                        received the order confirmation by Evreka Tech. Co. , and Evreka Tech. Co. has received payment
+                        in full.  Evreka Tech. Co. recommends that the Buyer keep a
+                        copy of this information either on paper or electronically.  
+                    </p>
+
+                    <p>
+                        <strong>5. Payment</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        Payment must be made at the time the Buyer places the order. At no time may any sums paid be
+                        considered as down payments or advances.   Evreka Tech. Co.
+                        will process the payment for the entire amount due on the order at the time the order is
+                        confirmed.   The Buyer can pay for his order using the online
+                        Credit Card facilities.   The Buyer guarantees to Evreka Tech. Co. that he has the necessary
+                        authorisations for the payment of his order.   Evreka Tech.
+                        Co. reserves the right to suspend or cancel any order and/or delivery, whatever its nature or
+                        state of execution, in the event of non-payment of any sum
+                        due by the Buyer or in the event of a payment irregularity.
+                        <br/>
+                        <br/>
+                          Within the framework of the fight against Internet fraud, information concerning your order
+                        may be forwarded to third parties for verification.   
+                    </p>
+
+                    <p>
+                        <br/>
+                        <strong>6. Choice of Products</strong>
+                    </p>
+
+                    <p>
+                        <br/>
+                        <br/>
+                          The Buyer, being aware of the products marketed by Evreka Tech. Co. and their specifications,
+                        has under his sole responsibility and on the basis of his
+                        needs, which he has determined prior to placing any order, decided to chose the product(s) that
+                        are the subject of his order. Moreover, the Buyer, who
+                        alone knows the products he owns and uses, is the sole judge of the compatibility of the
+                        products ordered with those used by him.  It is exclusively up to
+                        the Buyer, if he deems that he does not have the competence needed to make such a judgement, to
+                        seek advice.
+                    </p>
+
+                    <p>
+                        <strong>7. Delivery and Receipt</strong>
+                    </p>
+
+                    <p>
+                          7.1. General rules
+                    </p>
+
+                    <p>
+                        The products are delivered to the address given by the Buyer in the order, within the territory
+                        mentioned in Article 1 of these general sales conditions.
+                          In order to ensure quality service, Evreka Tech. Co. selects an appropriate delivery service
+                        in light of the customer's delivery address.  
+                    </p>
+
+                    <p>
+                        7.2 Delivery times
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        No damages may be claimed, sums withheld, or the order cancelled by the Buyer should the
+                        delivery take longer than said time.
+                    </p>
+
+                    <p>
+                        the products ordered shall be delivered within a maximum period of 45 days from the date on
+                        which the Buyer registered his order, subject to the purchase
+                        price having been paid in full.   The Buyer has the possibility of cancelling his order should
+                        the order not be delivered within that period. Sums paid by
+                        the Buyer shall then be returned to him without delay, any other compensation being excluded.
+                          In the event of a delay in relation to the initial delivery
+                        date, the Buyer should inform Evreka Tech. Co. of the fact in writing ( email ) in order to
+                        enable Evreka to improve the quality of service offered to him
+                        and to allow it to carry out an investigation with respect to the shipping company.   An
+                        investigation with respect to the shipping company may take up to
+                        30 business days. If, during this period, the products are found, they will be immediately
+                        forwarded to the place of delivery indicated in the order.   On
+                        the other hand, if the ordered products are not found after this period of 30 days of
+                        investigation, Evreka Tech. Co. shall, at its expense, resend the
+                        products ordered by the Buyer. In the event of a change of product, the shipping costs are at
+                        the consumer's expense.  
+                    </p>
+
+                    <p>
+                        7.3 Quality and conformity problems
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        In the event of delivery of products that do not correspond to the order (defective or not in
+                        compliance), the Buyer shall forward his claim within a
+                        period of 7 days from signature of the receipt of the products.   Claims must be sent by
+                        receipted registered letter to the address and must include:
+                    </p>
+
+                    <p>
+                        - the Buyer's details;  - the product references;  - the reasons for the claim.  
+                    </p>
+
+                    <p>
+                        The return of the products must take place within 7 business days of Evreka Tech. Co. Customer
+                        Service issuing a return number.   Failing which, Evreka
+                        Tech. Co. will not exchange or refund the products ordered.   Any products to be exchanged or
+                        refunded must be returned to Evreka Tech. Co. in their
+                        original state and packaging, complete and with all their accessories.   All costs and risks
+                        associated with the return of the products are borne by the
+                        Buyer.
+                    </p>
+
+                    <p>
+                        Failure to respect the above procedure and the specified time periods will result in the Buyer
+                        not being able to make any claim for the non-conformity of
+                        or defect in relation to the products delivered, said products being then considered as being in
+                        compliance and exempt from any apparent defect.
+                    </p>
+
+                    <p>
+                        <strong>8. Product availability</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        In the event that the product ordered is unavailable, Evreka Tech. Co. shall inform the Buyer as
+                        soon as possible. Evreka Tech. Co. may, in this case,
+                        supply an alternative product of equal quality and price.   In the event that Evreka Tech. Co.
+                        does not make use of this facility, the Buyer will be
+                        refunded without delay.   
+                        <br/>
+                        <br/>
+                    </p>
+
+                    <p>
+                        <br/>
+                        <strong>9. Right to cancel and return</strong>
+                    </p>
+
+                    <p>
+                          The Buyer has 7 clear days from the date of receipt of the products ordered, to return them at
+                        his expense for a refund.
+                    </p>
+
+                    <p>
+                        The products must imperatively be returned to Evreka Tech. Co. in a perfect salable condition,
+                        in their original state (packaging, accessories,
+                        instructions, etc.) duly sealed and accompanied by the invoice relating to the purchase.   If
+                        the products included a warranty form or any other document
+                        to be filled out, that document must not have been completed by the Buyer for him to be able to
+                        exercise his right of cancel and return.   Any incomplete
+                        or damaged products, or if the packaging has deteriorated, will be neither refunded nor
+                        exchanged.   The exercise of the right to cancel and return will
+                        result in a cash refund by a reaccrediting of the credit card used for the initial order. In the
+                        case of refunding, the shipping cost will be paid by the
+                        Buyer.
+                    </p>
+
+                    <p>
+                        <strong>10. Retention of ownership</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        Evreka Tech. Co. retains the full and entire ownership of the products sold until such time as
+                        payment has been received in full, including the principal,
+                        costs and taxes.
+                    </p>
+
+                    <p>
+                        <strong>11. Warranty</strong>
+                    </p>
+
+                    <p>
+                        The Customer benefits from the warranty against hidden defects. In the event that a
+                        manufacturing defect renders the Product unusable, the Customer may
+                        contact the Evreka Tech. Co. .After Sales Service, by receipted registered letter, at Evreka
+                        Tech. Co. , ODTÜ Teknokent KOSGEB Tekmer Binası No: 401
+                        Çankaya (Ankara/Turkey). Evreka Tech. Co. undertakes then to send to the customer, at its
+                        expense, a Product in good working order, which may be a
+                        replacement. Should the product be out of stock or impossible to repair, the Customer will be
+                        offered a replacement or refund of the initial Product. Any
+                        return of the product under the above warranty must be with the prior agreement of Evreka Tech.
+                        Co. . To that end, the Buyer shall contact the Evreka Tech.
+                        Co. After Sales Service.
+                    </p>
+
+                    <p>
+                        If it is accepted that the product is defective, Evreka Tech. Co. will issue the Buyer with a
+                        product return number. The return number, which is an
+                        indispensable and mandatory condition for the return of the products, is valid for a period of
+                        seven business days, from the moment that it is communicated
+                        to the Buyer. After its expiry, the Buyer must repeat his request, in accordance with the above
+                        procedure.   The defective product must be returned in its
+                        original packaging, with all its parts and together with its accessories, and be accompanied by
+                        the return number, which must be legible, as well as the
+                        series number of the product.   Any product, which is incomplete, damaged and/or the original
+                        packaging of which has deteriorated, will not be taken back
+                        or exchanged within the framework of the warranty.   All costs and risks involved with the
+                        return of the products including shipping are at the Buyer's
+                        expense.   The product under warranty will be exchanged or repaired, as Evreka Tech. Co. may
+                        decide.   Evreka Tech. Co. may not be held liable by the
+                        Buyer, with respect to any hidden defects that might affect the products delivered or within the
+                        context of a replacement of defective products or parts
+                        which render them unusable, for any possible damageable consequences that might arise from their
+                        use.   In any event, the warranty does not cover:   -
+                        replacement of consumables;  - any use which is not normal and consistent with the product
+                        instructions;  - damage which is specifically mentioned in the
+                        product documentation;  - defects and their consequences, arising from action by the Buyer or a
+                        repairer not authorized by Evreka Tech. Co. ;  - defects
+                        and their consequences linked to use not in accordance with the purpose for which the product is
+                        meant (professional use, joint use ...)  - products
+                        covered by a specific assistance and maintenance contract.
+                    </p>
+
+                    <p>
+                        <strong>12. Liability</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        The products offered by Evreka Tech. Co. are in accordance with current Turkey legislation.
+                          Evreka Tech. Co. may not be held liable for non-performance
+                        of the contract in the event of a product being out of stock or unavailable, for force majeure,
+                        disturbance or partial or total strike in particular in
+                        relation to the postal services and means of transport and/or communications.   Evreka Tech. Co.
+                        may not be held liable for any indirect damages that might
+                        arise from the fact of purchasing the products.   Evreka Tech. Co. may not be held liable for
+                        any loss of data and/or files. It is up to the Buyer to take
+                        all necessary backup measures.   If it is totally or partially impossible to use the products,
+                        because in particular of the incompatibility of the
+                        products, Evreka Tech. Co. may not be held liable for same nor may this give rise to
+                        compensation or a refund.   The Multify website also contains
+                        information from third parties and links to other Internet websites. Evreka Tech. Co. may not in
+                        any event be held liable for damages arising from the use
+                        of, access to, or the inability to use such third party information, or the content of the other
+                        Internet websites.
+                    </p>
+
+                    <p>
+                        <strong>13. Partial invalidity</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        If any provision of these general sales conditions is held to be invalid or declared as such in
+                        accordance with a law, regulation or following a final
+                        decision by a competent jurisdiction, the other provisions shall remain in force and effect.
+                    </p>
+
+                    <p>
+                          <strong>14. Non-waiver</strong>
+                    </p>
+
+                    <p>
+                          The fact that one of the parties does not insist that the failure by the other party to
+                        fulfill any obligation referred to in these general sales
+                        conditions be remedied shall not be interpreted in the future as a waiver of the obligation in
+                        question.
+                    </p>
+
+                    <p>
+                        <strong>15. Applicable law</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        The sales of products by Evreka Tech. Co. are subject to the regulations concerning distance
+                        selling in force in Turkey today. In the case of a purchase
+                        for export, it is up to the customer to check that the products are in accordance with the rules
+                        in force in the country concerned, whether in relation to
+                        taxes, statements or specific prohibitions. Any dispute in relation to the interpretation or
+                        application of these sales conditions shall be referred to the
+                        Ankara courts.
+                    </p>
+
+                    <p>
+                        <strong>17. Data Protection</strong>
+                    </p>
+
+                    <p>
+                          
+                    </p>
+
+                    <p>
+                        The information collected by Evreka Tech. Co. at the time of any order being placed by the Buyer
+                        is needed for the management of his order by Evreka Tech.
+                        Co. and its business partners.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="hakkimizda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" id="myModalLabel">About Us</h2>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p align="center">
+                            We believe in power of social media
+                        </p>
+
+                        <p align="center">
+                            Our aim is to reflect value on social media to the streets and adding value by making it
+                            accessible to the people.
+                        </p>
+                        <img src="{% static "img/about.jpg" %}" class="center-block img-responsive">
+
+                        <p align="center">
+                            Our Team, consists of 7 people, devotes its focus to enhancing Multify according to the
+                            needs of venues, organizations and people.
+                        </p>
+                    </div>
+                    <div>
+                        <p align="center">
+                            Berkay Akçora
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Sales &amp; Marketing
+                        </p>
+
+                        <p align="center">
+                            Mert Barutçu
+                        </p>
+
+                        <p align="center">
+                            Co-founder – IT Supervisor
+                        </p>
+
+                        <p align="center">
+                            Umutcan Duman
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Business Analyst
+                        </p>
+
+                        <p align="center">
+                            Mehmet Pancaroğlu
+                        </p>
+
+                        <p align="center">
+                            Co-founder – Business Analyst
+                        </p>
+
+                        <p align="center">
+                            Alev Sönmez
+                        </p>
+
+                        <p align="center">
+                            Designer Specialist
+                        </p>
+
+                        <p align="center">
+                            Cem Aydın
+                        </p>
+
+                        <p align="center">
+                            Software Engineer
+                        </p>
+                    </div>
+                    <br clear="all"/>
+
+                    <p align="center">
+                        Gökçen Nurlu
+                    </p>
+
+                    <p align="center">
+                        Software Engineer
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<div class="modal fade" id="gizlilikModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title" id="myModalLabel">Terms of Service</h2>
+                <h2 class="modal-title" id="myModalLabel">Gizlilik ve Güvenlik</h2>
             </div>
             <div class="modal-body">
-                <h3> Madde 1. KONU </h3>
+                <p align="center">
+                    <strong>Gizlilik ve Güvenlik</strong>
+                </p>
 
-                <p> Multify’ın internet sitesinde (www.multify.co) elektronik ortamda özellikleri ve fiyatı belirtilen
-                    sözleşme konusu ürünlerin satışı ve yurt içinde alıcıya teslimi ile ilgili tarafların hak ve
-                    yükümlülükleri bu sözleşmenin konusunu oluşturmaktadır. </p>
+                <p>
+                    Bu metinde <a href="http://www.multify.co/">www.multify.co</a> satış sitesi, Multify diye
+                    anılacaktır.
+                </p>
 
-                <h3>Madde 2. SATIŞ VE TESLİMAT </h3>
+                <p>
+                    <strong><u>Multify'da Kredi Kartı Güvenliği Nasıl Sağlanır ?</u></strong>
+                </p>
 
-                <p>2.1. Teslimat, satıcı firma tarafından kargo aracılığı ile müşterinin belirttiği teslimat adresine
-                    sipariş onaylandıktan sonra 30 iş günü içinde yapılacaktır. </p>
+                <p>
+                    Multify’dan alışveriş yapan kredi kartı sahiplerinin güvenliğini ilk planda tutmaktadır. Verilen
+                    siparişlerin ödeme/fatura/teslimat adresi bilgilerinin
+                    kontrolü gerçekleştirilir. Sitemizin 128 Bit SSL Sertifikası vardır.
+                </p>
 
-                <p>2.2. Resmi tatiller ve dini/milli bayram günleri bu süreden sayılmaz. Teslimat sırasında kargo
-                    görevlisi aracılığıyla ürünü teslim aldım ibaresine atılan imza; alıcı ürünü muayene edip, ürünü tam
-                    eksiksiz ve hasarsız olarak teslim aldığını kabul ettiğini gösterir. Kargo veya kuryeye herhangi bir
-                    nakliye ücreti ödenmeyecektir. </p>
+                <p>
+                    SSL ve güvenliğiniz, SSL teknolojisi ile satın alma süreci başladığında kullanıcı bilgisayarı ile
+                    banka arasında doğrudan şifreli bir iletişim olmakta ve
+                    kredi kartıyla ilgili hiçbir bilgi Multify çalışanları ya da üçüncü şahıslar tarafından
+                    görülmemektedir. Kredi kartı numaranız Multify personelince
+                    bilinmemekte ve CVV2 numaranız sizin haricinizde kimse tarafından görülememektedir.
+                </p>
 
-                <p>2.3. Ürünün kiralanması durumunda ürün için bir depozito ücreti alma hakkını EVREKA YAZILIM DONANIM
-                    DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ kendinde saklı tutar. Ürünün kiralama süreci bittiği
-                    zaman ürün satıcı firmaya geri gönderildiğinde ürünün üzerinde herhangi bir sorun olduğu durumda,
-                    satıcı firma satış sırasında almış olduğu kullanıcı hesap bilgileri üzerinden 500 (beş yüz) Türk
-                    Lirasına kadar bir ücret tahsisi yapabilir. </p>
+                <p>
+                    <strong><u>Veri Güvenliği </u></strong>
+                </p>
 
-                <h3>Madde 3. ÜRÜN VE HİZMETİ</h3>
+                <p>
+                    Kullanıcılardan derlenen tüm hassas ve kişisel bilgiler, en yüksek elektronik ve fiziksel güvenlik
+                    standartlarında saklanmakta, yalnızca yetki sahibi olan
+                    personelin ve ancak zorunlu durumlarda kullanıcı onayı altında ulaşabileceği bir sistemle, mevcut
+                    T.C. kanunları ve uluslararası kanunlar çerçevesinde
+                    kullanılmaktadır.
+                </p>
 
-                <p>3.1. Multify cihazları, EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ
-                    tarafından geliştirilmiş bir üründür. İşletmelerin sosyal medyadaki (Swarm) check-in sayılarını
-                    gerçek hayatta, mekanik sayacında veya dijital ekranında gösteren bir alettir.</p>
+                <p>
+                    Multify derlediği kişisel ve hassas bilgileri kullanıcı onayı olmaksızın hiçbir isim altında, hiçbir
+                    nedenle ve hiçbir muhatap nezdinde açıklamamayı, söz
+                    konusu bilgileri üçüncü şahıslarla paylaşmamayı ve hiçbir surette kötüye kullanmamayı taahhüt ve
+                    garanti eder.
+                </p>
 
-                <p>3.2. Multify, işletmede bulunan kablosuz internet altyapısını kullanarak bulut tabanlı sisteme
-                    erişerek işletmenin swarm üzerindeki “check-in” sayısına ulaşır ve bulut tabanlı sistemden gelen
-                    komutları kablosuz olarak mekanik sayacına ve ekranına yansıtır.</p>
+                <p>
+                    <strong><u>Veri Paylaşımı </u></strong>
+                </p>
 
-                <p>3.3. Multify, Foursquare ve Swarm üzerinden gelen verileri depolayan, aynı zamanda üyelerden gelen
-                    yönergelere göre çeşitli algoritmaların kullanımı ile kullanıcılarına belli raporlar sunabilen bir
-                    üründür.</p>
+                <p>
+                    Multify yukarıda sözü edilen kişisel içerikli bilgiler dışındaki genel kullanıcı bilgilerini,
+                    sunduğu hizmetleri daha verimli kılmak ve müşteri
+                    memnuniyetini en yüksek seviyede tutabilmek amacıyla analiz ederek yorumlamak ve seçkin iş ortakları
+                    ile paylaşmak hakkını saklı tutar.
+                </p>
 
-                <p>3.4. Multify adlı ürünün sorunsuz çalışabilmesi için işletmede gerekli kablosuz internet ağı ve
-                    elektrik bağlantısı olması gereklidir. İşletmede bulunan kablosuz internet ağının ise “Captive
-                    Portal” ismiyle anlatılan bir ağ olmaması gerekmektedir. “Captive Portal” (Doruknet Wispotter, TTNET
-                    Wifi) internete girmek istediğinizde karşınıza çıkan ve internete girebilmeniz için sayfaya kayıt
-                    olmanızı isteyen yapının ismidir. </p>
+                <p>
+                    Ayrıca kullanıcılar onay verdikleri takdirde bu bilgiler Multify tarafından değerlendirilerek ürün
+                    güncellemeleri, indirim duyuruları ve özel teklifler
+                    amacıyla kullanılabilir.
+                </p>
 
-                <p>3.5. Multify’ı kullanmadan önce Multify Cihazları ile birlikte gelen veya internet sitesinden temin
-                    edebileceğiniz kullanım kılavuzunu okuyup, tüm talimatları izleyin.</p>
+                <p>
+                    Bu sayfada yer alan güvenlik ve gizlilik kurallarının amacı Multify‘da yaptığınız alışverişlerde, bu
+                    hizmeti alırken vermiş olduğunuz kişisel bilgilerdeki
+                    güvenlik ve gizlilik sınırlarını belirlemektir.
+                </p>
 
-                <p>3.6. Multify’ın kullanımı için gerekli teknik gereksinimler www.multify.co internet sitesinin Sıkça
-                    Sorulan Sorular (S.S.S) bölümünde listelenmiştir. Üyelik ve satın alma işlemlerini tamamlamadan önce
-                    kullanıcının bu gereksinimleri karşılayıp karşılayamayacağını kontrol etmesi kendi
-                    sorumluluğundadır.</p>
+                <p>
+                    <strong><u>Multify Gizlilik ve Güvenlik Politikası Kapsamı</u></strong>
+                </p>
 
-                <p>3.7. Multify’ın kullanımı için kullanıcıların www.multify.co internet sitesinden üyelik oluşturmaları
-                    ve tüm kullanıcıların tek tek üyelik sözleşmesinin koşullarını kabul etmeleri gerekmektedir.
-                    (Multify’ı kullanan alıcılar “kullanıcı” olarak anılacaktır.)</p>
+                <p>
+                    Bu gizlilik ve güvenlik politikası, bu sayfada yer alan güvenlik ve gizlilik kurallarının amacı,
+                    Multify ‘da yaptığınız alışverişlerde, bu hizmeti alırken
+                    vermiş olduğunuz kişisel bilgilerdeki güvenlik ve gizlilik sınırlarını belirlemektir. Bu gizlilik ve
+                    güvenlik politikası Multify URL'i ile başlayan tüm
+                    sitelerde geçerlidir.
+                </p>
 
-                <p>3.8. Multify güvenlik veya iyileştirme gerekliliklerinden Multify cihazlarında uzaktan yazılım
-                    güncellemesi yapabilir.</p>
+                <p>
+                    Multify, tüm müşterilere ait bilgileri (fatura adresi, teslimat adresi vs.) hiçbir şekilde üçüncü
+                    kişiler ile paylaşmayacağını taahhüt eder.
+                </p>
 
-                <p>3.9. Ürün’ün işletmeye yerleştirilme hizmetleri, ürünün bir parçası değildir.</p>
+                <p>
+                    Multify 'dan satın aldığınız ürünlerin doğru adrese ulaşması için üyelik işlemleri ve/veya ürün
+                    siparişi sırasında girdiğiniz teslim adresinin
+                    doğruluğundan müşteri sorumludur.
+                </p>
 
-                <p>3.10. Müşteri ürünün işletmeye yerleştirilmesi konusunda hizmet satın almak istiyorsa bunu üretici
-                    veya satıcı firma ile görüşmelidir.</p>
+                <p>
+                    Multify 'dan satın aldığınız ürünlerin hasarsız, eksiksiz ve zamanında fatura ile birlikte
+                    tesliminden sipariş sırasında seçtiğiniz nakliye/kargo firması
+                    sorumludur.
+                </p>
 
-                <h3>Madde 4. – CAYMA HAKKI</h3>
+                <p>
+                    <strong><u>İçerik Kullanımı</u></strong>
+                </p>
 
-                <p>4.1. Alıcı ürünü teslim aldığı tarihten itibaren 7 (yedi) gün içerisinde; yazılı olarak ileterek
-                    herhangi bir gerekçe göstermeksizin ve cezai şart ödemeksizin sözleşmeden cayma hakkına
-                    sahiptir.</p>
+                <p>
+                    Multify'da yayınlanan hiçbir yazı veya grafik üçüncü kişiler tarafından izinsiz kullanılamaz. Bu
+                    sitede yer alan içerik materyali ya da fonksiyonalite,
+                    başka mecralarda yayınlanamaz, Multify 'un yazılı izni olmadan internet sitelerine link verilemez.
+                </p>
 
-                <p>4.2. Cayma hakkının kullanıldığına dair bildirimin 7 (yedi) gün içerisinde EVREKA YAZILIM DONANIM
-                    DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ’ne yöneltilmiş olması yeterlidir. Cayma süresi içinde
-                    EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ sözleşmeye konu mal veya hizmet
-                    karşılığında alıcıdan herhangi bir isim altında ödeme yapmasını veya alıcıyı borç altına sokan
-                    herhangi bir belge vermesini isteyemez. Alıcı, cayma süresi içinde malın mutat kullanımı sebebiyle
-                    meydana gelen değişiklik ve bozulmalardan sorumlu değildir.</p>
+                <p>
+                    Bu sitedeki materyallerin sadece sergileme, kopya, dağıtım veya yükleme için kişisel, ticari olmayan
+                    kullanım için değiştirmeme ve materyaller için tüm
+                    yasal ve içerdiği diğer kişisel notların yasal sahibiyseniz izin verilebilir. Değilseniz, Multify
+                    'ın izni olmadan, buradaki her şeyi diğer serverlara
+                    kopyalayamazsınız. Bu izin otomatik olarak bu şartlardan bir maddeyi bozduğunuz anda biter. Bu
+                    tehdit hususunda acilen yüklediğiniz veya resmettiğiniz
+                    materyali imha etmek zorundasınız. Bu sitedeki herhangi bir materyalin kullanımı kopyalama yasaları,
+                    ticari yasalar, güvenlik ve tanıtım yasaları ve
+                    iletişim kanunları ve statülerine tecavüz eder.
+                </p>
 
-                <p>4.3. Teslim alınmış olan ürünün değerinin azalması veya iadeyi imkânsız kılan bir nedenin varlığı
-                    cayma hakkının kullanılmasına engel değildir. Ancak değer azalması veya iadenin imkânsızlaşması
-                    alıcı kusurundan kaynaklanıyorsa, alıcı EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED
-                    ŞİRKETİ’ne ürünün değerini veya değerindeki azalmayı tazmin etmesi gerekir.</p>
+                <p>
+                    Bu sayfada yer alan güvenlik bilgileri Multify tarafından zaman zaman güncellenmektedir. Yapılan
+                    güncellemeleri kontrol etmek kullanıcıların
+                    sorumluluğundadır.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="teslimModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel">Teslimat ve İade Şartları</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    multify.co üzerinden yapmış olduğunuz online işlemleriniz sonucunda bir ürünün geri iadesi için
+                    aşağıdaki şartları sağlıyor olması gerekmektedir.
+                    <br/>
+                    <br/>
+                    <strong><u>Malzemelerin ayıplı ve kusurlu olma durumları</u></strong>
+                    <br/>
+                    Müşterinin eline geçen ürünlerde müşterimiz kargo firmasının yetkilisi önünde ürünü açar kırılma,
+                    yüzey montaj malzemelerin yerinden çıkması, kusurlu oluşu
+                    kırlışı gibi nedenlerden dolayı iade istenirse kargo firması yetkilisine ürünü iade edebilir.
+                    <br/>
+                    Firmamızın gönderdiği ürünler içinden görevini yerine getirememe yada elektroniksel olarak meydana
+                    gelmiş fabrikasyon hatalardan doğan sebepler için
+                    bizlere info{at}multify.co adresinden ulaşıp müşterimiz ürünün kusurunu belirterek ürün iadesi
+                    talebini iletebilir.
+                    <br/>
+                    <br/>
+                    <strong><u>Ürünlerin değiştirilmesi</u></strong>
+                    <br/>
+                    Ürünler stokta varsa aynı anda müşterimiz madur edilmeden değişimi gerçekleştirilir. Eğer stokta
+                    yoksa ürünlerin değişim süresi 30 iş günüdür.
+                    <br/>
+                    <br/>
+                    Ürünlerin sağlam çalışıyor olması durumlarında müşterinin istekleri doğrultusunda geri iade işlemi
+                    gerçekleştirilmemektedir. Ürünün kullanılması veya
+                    herhangi bir şekilde devreye alınması durumlarında ürün değişimi kattiyen yapılmaz.
+                    <br/>
+                    <br/>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title" id="myModalLabel">Bize Ulaşın</h2>
+            </div>
+            <div class="modal-body">
+                <div class="baslik-contact" style="width: 515px; float: left;">
+                    <h4>multify.co | info@multify.co | Evreka Yazılım Ltd. Şti.</h4>
 
-                <h3>Madde 5. – TARAFLARIN YÜKÜMLÜLÜKLERİ VE GENEL ŞARTLAR</h3>
-
-                <p>5.1. Alıcı satın aldığı ürünün teslimatının süresinde ve doğru şekilde yapılması için, ödeme
-                    işlemlerini internet sitesinde verilen bilgilere göre gerçekleştirerek teslimata ilişkin adres ve
-                    kişi bilgilerini doğru ve eksiksiz olarak bildirdiğini beyan ve kabul etmiştir.</p>
-
-                <p>5.2. Alıcı, www.multify.co internet sitesinde satışı yapılan ürüne ait yine www.multify.co internet
-                    sitesi’nde belirtilen temel özellikleri, tüm vergiler dahil satış fiyatı, ödeme şekli ve teslimata
-                    ilişkin ön bilgileri okuyup bilgi sahibi olduğunu ve elektronik ortamda bu hususları kabul ettiğine
-                    dair teyidi verdiğini beyan ve kabul eder.</p>
-
-                <p>5.3. Ürünün kiralanmadığı ve direk satın alındığı durumda, satıcı ve üretici firma kullanıcıya 6 ay
-                    süreli bir garanti hizmeti sunmak ile yükümlüdür.</p>
-
-                <p>5.4. Alıcı, teslim edilecek adres ve kişi olarak kendisinden başka bir kişi veya kuruluşu göstermiş
-                    ise bu kişi veya kuruluşun teslimatı kabul etmemesinden EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM
-                    SANAYİ VE LİMİTED ŞİRKETİ sorumlu tutulamaz.</p>
-
-                <p>5.5. EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ sözleşme konusu ürünün
-                    sağlam, eksiksiz, siparişte belirtilen niteliklere uygun ve varsa garanti belgeleri ve kullanım
-                    kılavuzları ile teslim edilmesinden sorumludur.</p>
-
-                <p>5.6. EVREKA YAZILIM DONANIM DANIŞMANLIK EĞİTİM SANAYİ VE LİMİTED ŞİRKETİ, hava muhalefeti, genel
-                    grev, ulaşımın kesilmesi gibi mücbir sebeplerle ancak bunlarla sınırlı olmamak üzere sözleşme konusu
-                    ürünün tesliminin imkansızlaşması sonucu yükümlülüklerini yerine getiremiyorsa, bu durumu alıcıya
-                    bildirmek zorundadır.</p>
-
-                <p>5.7. Multify adlı ürünün kullanım süresi boyunca ürün üzerinde, üründen kaynaklanan yani kullanıcının
-                    kullanım hatasından kaynaklanmayan sorunların çözümü için, ürünü üretici firmaya kargo ile göndermek
-                    ile yükümlüdür. Kargo ücreti müşterinin sorumluluğu altındadır. Üretici firma, yukarda ifade
-                    edildiği gibi ürün üzerinde kullanım hatasından kaynaklanmayan bir sorun olduğu durumda, ürünü 30
-                    takvim günü içerisinde tamir etmek veya değiştirmek ile sorumludur.</p>
-
-                <p>5.8. Alıcı satın aldığı ürün/ürünler, bedelinin eksiksiz ödenmiş olması kaydıyla, alıcının teslimatın
-                    yapılmasını istediği adrese sipariş onayından itibaren 30 (otuz) günlük yasal süresi içinde teslim
-                    edilir.</p>
-
-                <p>İşbu sözleşme sipariş verildiği tarihte akdedilmiştir. Alıcı sipariş vermeden önce www.multify.co
-                    internet sitesinde, gerekse sipariş verdikten sonra iş bu sözleşmeyi okuduğunu, içerdiği tüm bilgi
-                    ve koşulları kabul ettiğini kabul, beyan ve taahhüt etmiştir.</p>
-
+                    <p>ODTÜ Teknokent KOSGEB Tekmer No:401 ANKARA</p>
+                </div>
+                <div id="map-canvas"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -453,9 +1420,8 @@
         }, 2000);
     });
     $("#pre-purchase").click(function () {
-        $("html,body").animate({
-            scrollTop: $("#toPurchase").offset().top - 100
-        }, 2000);
+        window.location.href =
+        {% url "multify_app.views.order_form" %}
     });
     $("#home").click(function () {
         $("html,body").animate({
@@ -476,6 +1442,33 @@
 
     });
 
+</script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+
+
+    function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+            center: new google.maps.LatLng(39.898791, 32.776413),
+            zoom: 17,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+
+        $("#contactModal").on("shown.bs.modal", function () {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(new google.maps.LatLng(39.898791, 32.776413));
+        });
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(39.898791, 32.776413),
+            map: map,
+        });
+
+
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.trigger(map, 'resize');
 </script>
 </body>
 
