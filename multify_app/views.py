@@ -250,6 +250,13 @@ def order_form(request, message=None):
                 shipment_cost = shipping_models[0].shipment_price
             else:
                 shipment_cost = 50
+
+            if form.cleaned_data["form_currency"] == "TRY":
+                amount = str(((1800 + shipment_cost) * 100)*order.order_count)
+                print order.order_count
+            else:
+                amount = str(((700 + shipment_cost) * 100)*order.order_count)
+                print order.order_count
             data = {
                     # TODO fix these values
                     'api_id': IYZICO_API_KEY
@@ -258,8 +265,8 @@ def order_form(request, message=None):
                     , 'mode': 'test'
                     , 'type': 'CC.DB'
                     , 'return_url': SITE_URL + reverse("multify_app.views.after_payment_page")
-                    , 'amount': str(((1800 + shipment_cost) * 100)*order.order_count)
-                    , 'currency': 'TRY'
+                    , 'amount': amount
+                    , 'currency': form.cleaned_data["form_currency"]
                     , 'descriptor': 'Multify Device(s)'
                     , 'item_id_1': 'foursquare_device'
                     , 'item_name_1': 'Multify Device'

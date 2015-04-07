@@ -45,12 +45,17 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
+                        <img class="center-block img-responsive" style="margin-bottom: 20px" src="{% static "img/Multify__digital_fiyat_listesi-01.jpg" %}">
                             {% if LANGUAGE_CODE == "tr" %}
-                                <a href="#" id="changeLang" onclick="clickLang('en')">
-                                    <p>(Switch to International Order Form)</p></a></li>
+                                <a href="#" id="changeLang" class="btn btn-primary pull-right" onclick="clickLang('en')">
+                                    Switch to International Order Form</a>
+                                <a href="{% url "multify_app.views.index" %}" class="btn btn-info pull-right" style="margin-right: 10px" onclick="clickLang('en')">
+                                    Anasayfaya Dön</a>
                             {% else %}
-                                <a href="#" id="changeLang" onclick="clickLang('tr')">
-                                    <p>Türkçe Sipariş Formuna Geç</p></a></li>
+                                <a href="#" id="changeLang" class="btn btn-primary pull-right" onclick="clickLang('tr')">
+                                    Türkçe Sipariş Formuna Geç</a>
+                                <a href="{% url "multify_app.views.index" %}" class="btn btn-info pull-right" style="margin-right: 10px" >
+                                    Back to Homepage</a>
                             {% endif %}
                             <h2><strong>{% trans "Multify Order Form" %}</strong></h2>
                             {% bootstrap_field form.first_name layout='inline' %}
@@ -60,6 +65,7 @@
                             {% bootstrap_field form.contact_email layout='inline' %}
                             {% bootstrap_field form.customer_comment layout='inline' %}
                             {% bootstrap_field form.order_count %}
+                            {% bootstrap_field form.form_currency %}
                         </div>
                     </div>
                     <div class="row">
