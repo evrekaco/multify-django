@@ -45,13 +45,16 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
-                        <img class="center-block img-responsive" style="margin-bottom: 20px" src="{% static "img/Multify__digital_fiyat_listesi-01.jpg" %}">
                             {% if LANGUAGE_CODE == "tr" %}
+                                 <img class="center-block img-responsive" style="margin-bottom: 20px" src="{% static "img/Multify__digital_fiyat_listesi-01.jpg" %}">
+
                                 <a href="#" id="changeLang" class="btn btn-primary pull-right" onclick="clickLang('en')">
                                     Switch to International Order Form</a>
                                 <a href="{% url "multify_app.views.index" %}" class="btn btn-info pull-right" style="margin-right: 10px" onclick="clickLang('en')">
                                     Anasayfaya Dön</a>
                             {% else %}
+                                 <img class="center-block img-responsive" style="margin-bottom: 20px" src="{% static "img/Multify__digital_fiyat_listesi-eng.jpg" %}">
+                       
                                 <a href="#" id="changeLang" class="btn btn-primary pull-right" onclick="clickLang('tr')">
                                     Türkçe Sipariş Formuna Geç</a>
                                 <a href="{% url "multify_app.views.index" %}" class="btn btn-info pull-right" style="margin-right: 10px" >
