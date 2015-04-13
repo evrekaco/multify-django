@@ -51,7 +51,7 @@ class Multify(models.Model):
         unique_together = ("client", "device")
 
     def __unicode__(self):
-        return "Device: " + self.device.name+ "  Client: " + str(self.client) + "  Used Application: " + str(self.application)
+        return "Device: " + self.device.name+ "  Client: " + str(self.client).decode('utf-8') + "  Used Application: " + str(self.application)
 
 
 class Subscriber(models.Model):

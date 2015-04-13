@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
+from __future__ import unicode_literals
 from datetime import datetime
 from django.utils import timezone
 from time import sleep, time, mktime
@@ -20,7 +21,7 @@ class Command(BaseCommand):
         while True:
             list = Multify.objects.all()
             for multify in list:
-                self.stdout.write('Current Multify Client: %s' % str(multify.client.venue_name))
+                self.stdout.write('Current Multify Client: %s' % multify.client.venue_name)
                 self.stdout.write('Last Checked: %s' % str(multify.last_updated))
                 if multify.client.foursquare_code:
                     changed = False

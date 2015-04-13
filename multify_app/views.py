@@ -15,7 +15,6 @@ import foursquare
 from ipware.ip import get_ip
 import requests
 # Create your views here.
-from decorators import require_https
 from forms import SubscribeForm, ClientLoginForm, MultifyCorrectForm, MultifyOrderForm, ClientVenueCodeForm
 from models import Client, Multify, ActivityRecord, Device, CheckinRecord, OrderShipmentPrice, MultifyOrder
 from  django_project import settings
@@ -113,14 +112,14 @@ def change_venue_code(request):
 
             try:
                 fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
-                name = fsq_client.venues(client_obj_temp.foursquare_code)["venue"]["name"].encode('utf-8')
+                name = fsq_client.venues(client_obj_temp.foursquare_code)["venue"]["name"]
             except Exception as e:
                 client_obj_temp.venue_name = "<Bos>"
                 client_obj_temp.save()
                 new_form = ClientVenueCodeForm(instance=client_obj_temp)
                 return render(request, 'client/change_venue.html', {"form": new_form, "error": _("Foursquare App Configuration error") + ": " + str(e)})
 
-            client_obj_temp.venue_name = name
+            client_obj_temp.venue_name = name.encode('utf-8')
             client_obj_temp.save()
             new_form = ClientVenueCodeForm(instance=client_obj_temp)
             return render(request, 'client/change_venue.html', {"form": new_form, "success": _("Changed Succesfully")})
@@ -282,7 +281,7 @@ def push_welcomer(request):
     print request.POST
     return HttpResponse("Hola")
 
-@require_https
+
 def order_form(request, message=None):
     #TODO TURKCE ve INGILIZCE formlar eklenmeli, CURRENCY, BASE FIYAT
     if request.method == "POST":
@@ -313,7 +312,7 @@ def order_form(request, message=None):
                     , 'return_url': SITE_URL + reverse("multify_app.views.after_payment_page")
                     , 'amount': amount
                     , 'currency': form.cleaned_data["form_currency"]
-                    , 'descriptor': 'Multify Device(s)'
+                    , 'descriptor': ''
                     , 'item_id_1': 'foursquare_device'
                     , 'item_name_1': 'Multify Device'
                     , 'item_unit_quantity_1': str(order.order_count)
