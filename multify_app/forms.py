@@ -78,7 +78,7 @@ class MultifyOrderForm(forms.ModelForm):
         fields = ("first_name", "last_name", "company_name", "shipping_address", "shipping_address_2", "shipping_zip",
                   "shipping_city", "shipping_state", "shipping_country", "billing_address", "billing_address_2",
                   "billing_zip", "billing_city", "billing_state", "billing_country", "contact_mobile", "contact_email",
-                  "order_count", "customer_comment", "accept_tos")
+                  "order_count", "customer_comment", "accept_tos", "multify_type")
 
     def __init__(self, *args, **kwargs):
         super(MultifyOrderForm, self).__init__(*args, **kwargs)

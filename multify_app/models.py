@@ -15,7 +15,7 @@ class Client(models.Model):
     user = models.ForeignKey(User)
     venue_name = models.CharField(max_length=255,blank=True,null=True, verbose_name=_("Venue Name"))
     auth_token = models.CharField(max_length=255,blank=True,null=True, verbose_name=_("Client Auth Token"))
-    foursquare_code = models.CharField(max_length=255, blank=True, null=True,unique=True,verbose_name=_("FourSquare Code"))
+    foursquare_code = models.CharField(max_length=255, blank=True, null=True,verbose_name=_("FourSquare Code"))
 
     def __unicode__(self):
         return self.venue_name
@@ -132,6 +132,14 @@ class OrderShipmentPrice(models.Model):
     shipment_price = models.PositiveIntegerField(verbose_name=_("Shipment Cost"))
 
 class MultifyOrder(models.Model):
+    DIGITAL = 1
+    MECHANIC = 2
+
+    CHOICES = (
+        (DIGITAL, _("Digital")),
+        (MECHANIC, _("Mechanic")),
+    )
+    multify_type = models.IntegerField(choices=CHOICES, default=MECHANIC, verbose_name=_("Multify Model"))
     order_count = models.IntegerField(choices=[(x,str(x)) for x in range(1,6)], default=1, verbose_name=_("Order Count"))
 
     first_name = models.CharField(max_length=30, verbose_name=_("First Name"))

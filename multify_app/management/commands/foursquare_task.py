@@ -17,26 +17,31 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         gender_dict = {"male" : 1 , "female" : 2}
-        list = Multify.objects.all()
         while True:
+            list = Multify.objects.all()
             for multify in list:
                 self.stdout.write('Current Multify Client: %s' % str(multify.client.venue_name))
                 self.stdout.write('Last Checked: %s' % str(multify.last_updated))
                 if multify.client.foursquare_code:
                     changed = False
-                    fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
-                    response = fsq_client.venues(multify.client.foursquare_code)["venue"]["stats"]
+                    try:
+                        fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
+                        response = fsq_client.venues(multify.client.foursquare_code)["venue"]["stats"]
 
-                    if "checkinsCount" in response:
-                        multify.checkin_count = response["checkinsCount"]
-                        changed = True
-                    if "usersCount" in response:
-                        multify.unique_users = response["usersCount"]
-                        changed = True
+                        if "checkinsCount" in response:
+                            multify.checkin_count = response["checkinsCount"]
+                            changed = True
+                        if "usersCount" in response:
+                            multify.unique_users = response["usersCount"]
+                            changed = True
 
-                    print "Public data updated..", response
+                        print "Public data updated..", response
 
-                    print "Now testing for AUTH requests.."
+                        print "Now testing for AUTH requests.."
+                    except Exception as e:
+                        print str(e)
+                        continue
+
                     if multify.client.auth_token:
                         fsq_client = foursquare.Foursquare(access_token=multify.client.auth_token)
                         print "Trying to access more data using the token of", multify.client.venue_name
