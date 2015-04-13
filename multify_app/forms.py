@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from models import Subscriber, Multify, MultifyOrder
+from models import Subscriber, Multify, MultifyOrder, Client
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -44,9 +44,10 @@ class ClientLoginForm(forms.Form):
 class MultifyCorrectForm(forms.Form):
     multify = forms.ModelChoiceField(queryset=Multify.objects.all(), empty_label=_("(Seciniz)"))
     corrected_count = forms.IntegerField(label=_("Number seen on Multify"))
+
     def __init__(self, user, *args, **kwargs):
         super(MultifyCorrectForm, self).__init__(*args, **kwargs)
-        user = user._wrapped if hasattr(user,'_wrapped') else user
+        user = user._wrapped if hasattr(user, '_wrapped') else user
         self.fields['multify'].queryset = Multify.objects.filter(client__user=user)
 
 
@@ -58,9 +59,20 @@ class MultifyCorrectForm(forms.Form):
         return self.cleaned_data
 
 
+class ClientVenueCodeForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = {"venue_name", "foursquare_code"}
+
+    def __init__(self, *args, **kwargs):
+        super(ClientVenueCodeForm, self).__init__(*args, **kwargs)
+        self.fields['venue_name'].widget.attrs['readonly'] = True
+
+
 class MultifyOrderForm(forms.ModelForm):
-    accept_tos = forms.BooleanField(label=_("I accept Terms of Service"),required=True)
-    form_currency = forms.CharField(max_length=5,widget=forms.HiddenInput(), initial='TRY')
+    accept_tos = forms.BooleanField(label=_("I accept Terms of Service"), required=True)
+    form_currency = forms.CharField(max_length=5, widget=forms.HiddenInput(), initial='TRY')
+
     class Meta:
         model = MultifyOrder
         fields = ("first_name", "last_name", "company_name", "shipping_address", "shipping_address_2", "shipping_zip",
@@ -73,11 +85,12 @@ class MultifyOrderForm(forms.ModelForm):
         print get_language()
         if get_language() == "tr":
             self.fields['form_currency'].initial = "TRY"
-            self.fields['order_count'].choices= [(x,str(x)+" x 1499TL = " + str(1499*x) + "TL + Kargo Ücreti + KDV") for x in range(1,6)]
+            self.fields['order_count'].choices = [
+                (x, str(x) + " x 1499TL = " + str(1499 * x) + "TL + Kargo Ücreti + KDV") for x in range(1, 6)]
         else:
             self.fields['form_currency'].initial = "USD"
-            self.fields['order_count'].choices=[(x,str(x)+" x 700$ = " + str(700*x) + "$ + Shipment") for x in range(1,6)]
-
+            self.fields['order_count'].choices = [(x, str(x) + " x 700$ = " + str(700 * x) + "$ + Shipment") for x in
+                                                  range(1, 6)]
 
 
     def clean_accept_tos(self):

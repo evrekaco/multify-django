@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     url(r'^client_login/$', 'multify_app.views.client_login', name='client_login'),
     url(r'^client_home/$', 'multify_app.views.client_home'),
     url(r'^multify_correct/$', 'multify_app.views.multify_correct'),
+    url(r'^change_venue_code/$', 'multify_app.views.change_venue_code'),
     url(r'^foursquare_token/$', 'multify_app.views.foursquare_token_generate'),
     url(r'^after_fsq_auth/$', 'multify_app.views.after_fsq_auth'),
 

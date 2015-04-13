@@ -31,6 +31,12 @@
         </a>
     </div>
     <div class="btn-group" role="group">
+        <a href="{% url 'multify_app.views.change_venue_code' %}" type="button" class="btn btn-default"><span
+                class="glyphicon glyphicon-wrench"
+                aria-hidden="true"></span> {% trans "Change Venue Code" %}
+        </a>
+    </div>
+    <div class="btn-group" role="group">
         <a href="{% url 'multify_app.views.foursquare_token_generate' %}" type="button" class="btn btn-default"
            id="logout"><span
                 class="glyphicon glyphicon-link"

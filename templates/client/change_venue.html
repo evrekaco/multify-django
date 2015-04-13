@@ -1,0 +1,28 @@
+{% extends "client/base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% block MAIN_BLOCK %}
+
+
+    <div class="well well-lg center-block" style="width: 60%; margin-top: 100px">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">{% trans "Error:" %}</span>
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">{% trans "Success:" %}</span>
+                {{ success }}
+            </div>
+        {% endif %}
+        <form action="{% url 'multify_app.views.change_venue_code' %}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-red pull-right">{% trans "Apply" %}</button>
+        </form>
+    </div>
+{% endblock MAIN_BLOCK %}

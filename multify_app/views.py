@@ -1,8 +1,10 @@
+# coding=utf-8
 from __future__ import unicode_literals
 import json
 import urllib
 import urllib2
 import datetime
+from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
@@ -13,7 +15,7 @@ import foursquare
 from ipware.ip import get_ip
 import requests
 # Create your views here.
-from forms import SubscribeForm, ClientLoginForm, MultifyCorrectForm, MultifyOrderForm
+from forms import SubscribeForm, ClientLoginForm, MultifyCorrectForm, MultifyOrderForm, ClientVenueCodeForm
 from models import Client, Multify, ActivityRecord, Device, CheckinRecord, OrderShipmentPrice, MultifyOrder
 from  django_project import settings
 
@@ -81,6 +83,48 @@ def client_home(request, error=None, success=None):
     except:
         return index(request)
     return render(request, 'client/home.html', {"client": client, "error": error, "success": success})
+
+def change_venue_code(request):
+    if not request.user.is_authenticated():
+        return redirect(reverse('multify_app.views.client_login'))
+    if request.user.is_staff:
+        return redirect("/admin")
+
+    try:
+        client_obj = Client.objects.get(user=request.user)
+    except Client.DoesNotExist:
+        return render(request, 'client/change_venue.html', {"error": _("Client Object does not exist")})
+
+    if request.method == "GET":
+        form = ClientVenueCodeForm(instance=client_obj)
+        return render(request, 'client/change_venue.html', {"form": form})
+    else:
+        form = ClientVenueCodeForm(request.POST, instance=client_obj)
+        if form.is_valid():
+            client_obj_temp = form.save()
+            try:
+                multify = Multify.objects.get(client=client_obj_temp)
+            except Exception as e:
+                client_obj_temp.venue_name = "<Bos>"
+                client_obj_temp.save()
+                new_form = ClientVenueCodeForm(instance=client_obj_temp)
+                return render(request, 'client/change_venue.html', {"form": new_form, "error": _("There is no connected Multify")})
+
+            try:
+                fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
+                name = fsq_client.venues(client_obj_temp.foursquare_code)["venue"]["name"]
+            except Exception as e:
+                client_obj_temp.venue_name = "<Bos>"
+                client_obj_temp.save()
+                new_form = ClientVenueCodeForm(instance=client_obj_temp)
+                return render(request, 'client/change_venue.html', {"form": new_form, "error": _("Foursquare App Configuration error") + ": " + str(e)})
+
+            client_obj_temp.venue_name = name
+            client_obj_temp.save()
+            new_form = ClientVenueCodeForm(instance=client_obj_temp)
+            return render(request, 'client/change_venue.html', {"form": new_form, "success": _("Changed Succesfully")})
+        else:
+            return render(request, 'client/change_venue.html', {"form": form})
 
 
 def multify_correct(request):
@@ -257,6 +301,7 @@ def order_form(request, message=None):
             else:
                 amount = str(((700 + shipment_cost) * 100)*order.order_count)
                 print order.order_count
+            amount = "100"
             data = {
                     # TODO fix these values
                     'api_id': IYZICO_API_KEY
@@ -274,21 +319,21 @@ def order_form(request, message=None):
                     , 'item_unit_amount_1': '1'
                     , 'customer_first_name': order.first_name.encode('utf-8')
                     , 'customer_last_name': order.last_name.encode('utf-8')
-                    , 'customer_company_name': str(order.company_name).encode('utf-8')
+                    , 'customer_company_name': order.company_name.encode('utf-8')
                     , 'customer_shipping_address_line_1': order.shipping_address.encode('utf-8')
-                    , 'customer_shipping_address_line_2': str(order.shipping_address_2).encode('utf-8')
-                    , 'customer_shipping_address_zip': str(order.shipping_zip).encode('utf-8')
-                    , 'customer_shipping_address_city': str(order.shipping_city).encode('utf-8')
-                    , 'customer_shipping_address_state': str(order.shipping_state).encode('utf-8')
+                    , 'customer_shipping_address_line_2': order.shipping_address_2.encode('utf-8')
+                    , 'customer_shipping_address_zip': order.shipping_zip.encode('utf-8')
+                    , 'customer_shipping_address_city': order.shipping_city.encode('utf-8')
+                    , 'customer_shipping_address_state': order.shipping_state.encode('utf-8')
                     , 'customer_shipping_address_country': order.shipping_country.name
                     , 'customer_billing_address_line_1': order.billing_address.encode('utf-8')
-                    , 'customer_billing_address_line_2': str(order.billing_address_2).encode('utf-8')
-                    , 'customer_billing_address_zip': str(order.billing_zip).encode('utf-8')
-                    , 'customer_billing_address_city': str(order.billing_city).encode('utf-8')
-                    , 'customer_billing_address_state': str(order.billing_state).encode('utf-8')
+                    , 'customer_billing_address_line_2': order.billing_address_2.encode('utf-8')
+                    , 'customer_billing_address_zip': order.billing_zip.encode('utf-8')
+                    , 'customer_billing_address_city': order.billing_city.encode('utf-8')
+                    , 'customer_billing_address_state': order.billing_state.encode('utf-8')
                     , 'customer_billing_address_country': order.billing_country.name
                     , 'customer_contact_phone': 'None'
-                    , 'customer_contact_mobile': str(order.contact_mobile)
+                    , 'customer_contact_mobile': order.contact_mobile
                     , 'customer_contact_email': str(order.contact_email)
                     , 'customer_contact_ip': str(get_ip(request)) if get_ip(request) else "None"
                     , 'customer_language': 'tr'
@@ -322,7 +367,7 @@ def after_payment_page(request):
                 if data_as_dict['response']['state'] == "success":
                     data_as_dict = data_as_dict["transaction"]
                 else:
-                    return order_form(request, "Payment Server error")
+                    return order_form(request, "Payment Server error" + str(data_as_dict))
             except ValueError, e:
                 return order_form(request, str(e))
 
