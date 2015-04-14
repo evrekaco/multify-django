@@ -14,14 +14,101 @@
 <body>
 <div class="container" style="margin-top: 50px">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="well well-lg center-block" style="height: 600px; padding-bottom: 50px">
+        <div class="col-lg-5">
+            <div class="well well-lg center-block" style="min-height: 700px; padding-bottom: 50px">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <address>
+                            <strong> {% trans "Shipping Address" %}</strong>
+                            <br>
+                            <strong>{{ order.company_name }}</strong>
+                            <br>
+                            {{ order.shipping_address }}
+                            <br>
+                            {{ order.shipping_address_2 }}
+                            <br>
+                            {{ order.shipping_city }}, {{ order.shipping_state }}
+                            <br>
+                            {{ order.shipping_zip }}
+                            <br>
+                            {{ order.country.name }}
+                            <abbr title="Phone">P:</abbr> {{ order.contact_mobile }}
+                        </address>
+                        <br>
+                        <address>
+                            <strong> {% trans "Billing Address" %}</strong>
+                            <br>
+                            <strong>{{ order.company_name }}</strong>
+                            <br>
+                            {{ order.billing_address }}
+                            <br>
+                            {{ order.billing_address_2 }}
+                            <br>
+                            {{ order.billing_city }}, {{ order.billing_state }}
+                            <br>
+                            {{ order.billing_zip }}
+                            <br>
+                            {{ order.country.name }}
+                            <abbr title="Phone">P:</abbr> {{ order.contact_mobile }}
+                        </address>
+
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                        <p>
+                            <em>{{ order.date }}</em>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        <h3>{% trans "Receipt" %}</h3>
+                    </div>
+                    </span>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>{% trans "Receipt" %}</th>
+                            <th>#</th>
+                            <th class="text-center">{% trans "Price" %}</th>
+                            <th class="text-center">{% trans "Total" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-md-9">
+                                <em>{% trans "Mulfity Product" %} {{ order.get_multify_type_display }}</em></td>
+                            <td class="col-md-1" style="text-align: center">{{ order.order_count }}</td>
+                            <td class="col-md-1 text-center">{{ base_amount }} {{ cur_text }}</td>
+                            <td class="col-md-1 text-center">{{ without_shipment }} {{ cur_text }}</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-9"><em>{% trans "Shipment" %}</em></td>
+                            <td class="col-md-1" style="text-align: center">{{ order.order_count }}</td>
+                            <td class="col-md-1 text-center">{{ shipment_cost }} {{ cur_text }}</td>
+                            <td class="col-md-1 text-center">{{ full_shipment }} {{ cur_text }}</td>
+                        </tr>
+                        <tr>
+                            <td>  </td>
+                            <td>  </td>
+                            <td class="text-right"><h4><strong>{% trans "Total" %}</strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong> {{ amount }} {{ cur_text }}</strong></h4>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </td>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="well well-lg center-block" style="height: 700px; padding-bottom: 50px">
                 <form class="iyzico-payment-form"></form>
             </div>
         </div>
     </div>
 </div>
-    <script src="https://www.iyzico.com/frontend/form/v1/widget.js?&mode=live&token={{ token }}"></script>
+<script src="https://www.iyzico.com/frontend/form/v1/widget.js?&mode=live&token={{ token }}"></script>
 </body>
 
 </html>

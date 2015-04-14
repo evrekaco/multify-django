@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
                     if multify.client.auth_token:
                         fsq_client = foursquare.Foursquare(access_token=multify.client.auth_token)
-                        print "Trying to access more data using the token of", multify.client.venue_name
+                        print "Trying to access more data using the token of", multify.client.venue_name.encode('utf-8')
                         try:
                             #print "startAt:", int(mktime(multify.last_updated.timetuple())) , multify.last_updated
                             stats = fsq_client.venues.stats(multify.client.foursquare_code,params={"startAt":int(mktime(multify.last_updated.timetuple()))})

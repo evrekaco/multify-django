@@ -174,6 +174,6 @@ class MultifyOrder(models.Model):
 
     payment_done = models.BooleanField(default=False, verbose_name="Payment Successful")
 
-
+    date = models.DateTimeField(default=datetime.now, blank=True, verbose_name="Create Date")
 
 

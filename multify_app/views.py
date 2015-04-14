@@ -295,13 +295,31 @@ def order_form(request, message=None):
             else:
                 shipment_cost = 50
 
+            multiplier = 1
+
+            try:
+                cur = urllib2.urlopen('http://rate-exchange.appspot.com/currency?from=EUR&to=USD')
+                cur_dict = json.loads(cur.read())
+                multiplier = cur_dict['rate']
+                shipment_cost = int(shipment_cost * multiplier)
+                print multiplier
+            except Exception as e:
+                print "error at currency parsing", str(e)
+
             if form.cleaned_data["form_currency"] == "TRY":
                 amount = str(((1800 + shipment_cost) * 100)*order.order_count)
+                base_amount = 1800
+                currency_text = "TL"
+                without_shipment = order.order_count*1800
+                full_shipment = order.order_count * shipment_cost
                 print order.order_count
             else:
                 amount = str(((700 + shipment_cost) * 100)*order.order_count)
+                base_amount = 700
+                currency_text = "$"
+                without_shipment = order.order_count*700
+                full_shipment = order.order_count * shipment_cost
                 print order.order_count
-            amount = "100"
             data = {
                     # TODO fix these values
                     'api_id': IYZICO_API_KEY
@@ -344,7 +362,8 @@ def order_form(request, message=None):
             if "response" in resp_dict and resp_dict['response']['state'] == "success":
                 order.save()
                 return render(request, 'payment.html',
-                              {"order": order, "token": resp_dict['transaction_token']})
+                              {"order": order, "token": resp_dict['transaction_token'], "amount": int(float(amount))/100, "base_amount": base_amount, "cur_text": currency_text, "without_shipment":without_shipment,"shipment_cost":shipment_cost,
+                              "full_shipment": full_shipment})
             else:
                 print resp_dict
                 return render(request, 'order.html', {"form": form, "message": "Error while connecting to payment system:" + str(resp_dict)})

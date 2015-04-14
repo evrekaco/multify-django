@@ -2,11 +2,14 @@
 from __future__ import unicode_literals
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django_countries.widgets import CountrySelectWidget
 from models import Subscriber, Multify, MultifyOrder, Client
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _, get_language
 
+
+from django_countries import Countries,countries
 
 class SubscribeForm(forms.ModelForm):
     # accept_tos = forms.BooleanField(label="I accept Terms of Service")
@@ -85,12 +88,14 @@ class MultifyOrderForm(forms.ModelForm):
         print get_language()
         if get_language() == "tr":
             self.fields['form_currency'].initial = "TRY"
+            self.fields['shipping_country'].choices = [x for x in list(countries) if x[0]=='TR']
             self.fields['order_count'].choices = [
                 (x, str(x) + " x 1499TL = " + str(1499 * x) + "TL + Kargo Ücreti + KDV") for x in range(1, 6)]
         else:
             self.fields['form_currency'].initial = "USD"
             self.fields['order_count'].choices = [(x, str(x) + " x 700$ = " + str(700 * x) + "$ + Shipment") for x in
                                                   range(1, 6)]
+            self.fields['shipping_country'].choices = [x for x in list(countries) if x[0]!='TR']
 
 
     def clean_accept_tos(self):
