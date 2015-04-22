@@ -366,6 +366,8 @@ def order_form(request, message=None):
                               "full_shipment": full_shipment})
             else:
                 print resp_dict
+                order.admin_comment = "ERROR: " + str(resp_dict)
+                order.save()
                 return render(request, 'order.html', {"form": form, "message": "Error while connecting to payment system:" + str(resp_dict)})
         else:
             print "not valid", form.errors
