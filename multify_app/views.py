@@ -20,13 +20,14 @@ from models import Client, Multify, ActivityRecord, Device, CheckinRecord, Order
 from  django_project import settings
 
 from django.template.defaultfilters import slugify
-from django_project.settings import IYZICO_API_KEY, IYZICO_SECRET, SITE_URL
+from django_project.settings import IYZICO_API_KEY, IYZICO_SECRET, SITE_URL, FSQ_PUSH_SECRET
 from django.utils.translation import ugettext_lazy as _
 
+from django.utils import timezone
 
 
 def index(request, form=None):
-    #Anasayfa
+    # Anasayfa
     if form:
         subs_form = form
     else:
@@ -35,7 +36,7 @@ def index(request, form=None):
 
 
 def save_subscriber_record(request):
-    #Maillist save
+    # Maillist save
     if request.method == "POST":
         form = SubscribeForm(request.POST)
         if form.is_valid():
@@ -48,7 +49,7 @@ def save_subscriber_record(request):
 
 
 def client_login(request):
-    #login view
+    # login view
     if request.method == "POST":
         form = ClientLoginForm(request.POST)
         if form.is_valid():
@@ -72,17 +73,18 @@ def client_login(request):
 
 
 def client_home(request, error=None, success=None):
-    #client Home page
+    # client Home page
     if not request.user.is_authenticated():
         return redirect(reverse('multify_app.views.client_login'))
     if request.user.is_staff:
         return redirect("/admin")
     try:
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         client = Client.objects.get(user=user)
     except:
         return index(request)
     return render(request, 'client/home.html', {"client": client, "error": error, "success": success})
+
 
 def change_venue_code(request):
     if not request.user.is_authenticated():
@@ -108,16 +110,19 @@ def change_venue_code(request):
                 client_obj_temp.venue_name = "<Bos>"
                 client_obj_temp.save()
                 new_form = ClientVenueCodeForm(instance=client_obj_temp)
-                return render(request, 'client/change_venue.html', {"form": new_form, "error": _("There is no connected Multify")})
+                return render(request, 'client/change_venue.html',
+                              {"form": new_form, "error": _("There is no connected Multify")})
 
             try:
-                fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID, client_secret=multify.application.client_Secret)
+                fsq_client = foursquare.Foursquare(client_id=multify.application.client_ID,
+                                                   client_secret=multify.application.client_Secret)
                 name = fsq_client.venues(client_obj_temp.foursquare_code)["venue"]["name"]
             except Exception as e:
                 client_obj_temp.venue_name = "<Bos>"
                 client_obj_temp.save()
                 new_form = ClientVenueCodeForm(instance=client_obj_temp)
-                return render(request, 'client/change_venue.html', {"form": new_form, "error": _("Foursquare App Configuration error") + ": " + str(e)})
+                return render(request, 'client/change_venue.html',
+                              {"form": new_form, "error": _("Foursquare App Configuration error") + ": " + str(e)})
 
             client_obj_temp.venue_name = name.encode('utf-8')
             client_obj_temp.save()
@@ -128,20 +133,20 @@ def change_venue_code(request):
 
 
 def multify_correct(request):
-    #client Multify imi dogrula sayfasi
+    # client Multify imi dogrula sayfasi
     if not request.user.is_authenticated():
         return redirect(reverse('multify_app.views.client_login'))
     if request.user.is_staff:
         return redirect("/admin")
 
     try:
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         client = Client.objects.get(user__pk=user.pk)
     except:
         return index(request)
 
     if request.method == "POST":
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         form = MultifyCorrectForm(user, request.POST)
         if form.is_valid():
             try:
@@ -163,7 +168,7 @@ def multify_correct(request):
             return render(request, 'client/correct.html',
                           {"client": client, "correct_form": form})
     else:
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         return render(request, 'client/correct.html',
                       {"client": client, "correct_form": MultifyCorrectForm(user)})
 
@@ -175,7 +180,7 @@ def foursquare_token_generate(request):
         return redirect("/admin")
 
     try:
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         multify = Multify.objects.filter(client__user=user)
         if len(multify) > 0:
             multify = multify[0]
@@ -199,7 +204,7 @@ def foursquare_token_generate(request):
 def after_fsq_auth(request):
     if request.method == "GET":
         print request.user
-        user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
         multify = Multify.objects.filter(client__user=user)
         if len(multify) > 0:
             multify = multify[0]
@@ -272,23 +277,92 @@ def get_checkins(request):
         else:
             return client_home(request, error="Henuz Multify Kaydiniz yok?")
         rec = CheckinRecord.objects.filter(multify=multify).order_by('-checkin_date')[:10]
-        response = {"data": [x.to_dict(multify.checkin_count-idx) for idx,x in enumerate(rec)]}
+        response = {"data": [x.to_dict(multify.checkin_count - idx) for idx, x in enumerate(rec)]}
         return HttpResponse(json.dumps(response))
 
 
 @csrf_exempt
 def push_welcomer(request):
-    print request.POST
+    if "secret" in request.POST and request.POST["secret"] == FSQ_PUSH_SECRET:
+        # print "Yay! a valid PUSH from fsq.."
+        if "checkin" in request.POST and "venue" in request.POST["checkin"]:
+            gender_dict = {"male": 1, "female": 2}
+
+            checkin = json.loads(request.POST["checkin"])
+            #print checkin
+
+            venue_code = checkin["venue"]["id"]
+            venue_name = checkin["venue"]["name"]
+
+
+            print "POST from", str(get_ip(request))
+            print "Checkin AT", venue_name, " - Looking for multifys"
+
+
+            multifys = Multify.objects.filter(client__foursquare_code=venue_code)
+            if multifys.count() > 0:
+                #print "Venue code to multify result:", multifys
+                for multify in multifys:
+                    try:
+                        print "Updating Public Data.."
+                        response = checkin["venue"]["stats"]
+                        changed = False
+                        if "checkinsCount" in response:
+                            multify.checkin_count = response["checkinsCount"]
+                            changed = True
+                        if "usersCount" in response:
+                            multify.unique_users = response["usersCount"]
+                            changed = True
+
+                        if changed:
+                            print response
+                            multify.last_updated = datetime.datetime.now(tz=timezone.get_current_timezone())
+                            multify.save()
+                            print "Public data updated.."
+
+                        print "ADDING checkin to: ", multify.client.venue_name
+                        new_rec, created = CheckinRecord.objects.get_or_create(multify=multify,
+                                                                               checkin_date=datetime.datetime.fromtimestamp(
+                                                                                   checkin["createdAt"],
+                                                                                   timezone.get_current_timezone()),
+                                                                               fsq_id=checkin["user"]["id"].encode('utf-8'))
+                        if "firstName" in checkin["user"]:
+                            new_rec.name = checkin["user"]["firstName"]
+                        if "lastName" in checkin["user"]:
+                            new_rec.surname = checkin["user"]["lastName"]
+                        if "gender" in checkin["user"]:
+                            new_rec.gender = gender_dict[checkin["user"]["gender"]] if checkin["user"][
+                                                                                           "gender"] in gender_dict else 3
+                        if "photo" in checkin["user"] and "prefix" in checkin["user"]["photo"] and "suffix" in \
+                                checkin["user"]["photo"]:
+                            new_rec.profile_picture_url = checkin["user"]["photo"]["prefix"] + "original" + \
+                                                          checkin["user"]["photo"]["suffix"]
+
+                        if created:
+                            print "\tNEW CHECKIN!", str(new_rec)
+                        else:
+                            print "\tDUPLICATE AVOIDED"
+                        new_rec.save()
+                    except Exception as e:
+                        print str(e)
+            else:
+                print "We don't have a multify for this code:", venue_code, "and name:", venue_name
+        else:
+            print "No checkin info in this push.."
+    else:
+        print "BAD PUSH"
     return HttpResponse("Hola")
 
 
 def order_form(request, message=None):
-    #TODO TURKCE ve INGILIZCE formlar eklenmeli, CURRENCY, BASE FIYAT
+    # TODO TURKCE ve INGILIZCE formlar eklenmeli, CURRENCY, BASE FIYAT
     if request.method == "POST":
         form = MultifyOrderForm(request.POST)
         if form.is_valid():
             order = form.save()
-            order.external_id = slugify(order.first_name + order.last_name + datetime.datetime.now().isoformat()+" ordercount " + str(order.order_count))
+            order.external_id = slugify(
+                order.first_name + order.last_name + datetime.datetime.now().isoformat() + " ordercount " + str(
+                    order.order_count))
             shipping_models = OrderShipmentPrice.objects.filter(country=order.shipping_country)
             if len(shipping_models) > 0:
                 shipment_cost = shipping_models[0].shipment_price
@@ -307,73 +381,80 @@ def order_form(request, message=None):
                 print "error at currency parsing", str(e)
 
             if form.cleaned_data["form_currency"] == "TRY":
-                amount = str(((1800 + shipment_cost) * 100)*order.order_count)
+                amount = str(((1800 + shipment_cost) * 100) * order.order_count)
                 base_amount = 1800
                 currency_text = "TL"
-                without_shipment = order.order_count*1800
+                without_shipment = order.order_count * 1800
                 full_shipment = order.order_count * shipment_cost
                 print order.order_count
             else:
-                amount = str(((700 + shipment_cost) * 100)*order.order_count)
+                amount = str(((700 + shipment_cost) * 100) * order.order_count)
                 base_amount = 700
                 currency_text = "$"
-                without_shipment = order.order_count*700
+                without_shipment = order.order_count * 700
                 full_shipment = order.order_count * shipment_cost
                 print order.order_count
             data = {
-                    # TODO fix these values
-                    'api_id': IYZICO_API_KEY
-                    , 'secret': IYZICO_SECRET
-                    , 'external_id': order.external_id
-                    , 'mode': 'live'
-                    , 'type': 'CC.DB'
-                    , 'return_url': SITE_URL + reverse("multify_app.views.after_payment_page")
-                    , 'amount': amount
-                    , 'currency': form.cleaned_data["form_currency"]
-                    , 'descriptor': ''
-                    , 'item_id_1': 'foursquare_device'
-                    , 'item_name_1': 'Multify Device'
-                    , 'item_unit_quantity_1': str(order.order_count)
-                    , 'item_unit_amount_1': '1'
-                    , 'customer_first_name': order.first_name.encode('utf-8')
-                    , 'customer_last_name': order.last_name.encode('utf-8')
-                    , 'customer_company_name': order.company_name.encode('utf-8')
-                    , 'customer_shipping_address_line_1': order.shipping_address.encode('utf-8')
-                    , 'customer_shipping_address_line_2': order.shipping_address_2.encode('utf-8')
-                    , 'customer_shipping_address_zip': order.shipping_zip.encode('utf-8')
-                    , 'customer_shipping_address_city': order.shipping_city.encode('utf-8')
-                    , 'customer_shipping_address_state': order.shipping_state.encode('utf-8')
-                    , 'customer_shipping_address_country': order.shipping_country.name
-                    , 'customer_billing_address_line_1': order.billing_address.encode('utf-8')
-                    , 'customer_billing_address_line_2': order.billing_address_2.encode('utf-8')
-                    , 'customer_billing_address_zip': order.billing_zip.encode('utf-8')
-                    , 'customer_billing_address_city': order.billing_city.encode('utf-8')
-                    , 'customer_billing_address_state': order.billing_state.encode('utf-8')
-                    , 'customer_billing_address_country': order.billing_country.name
-                    , 'customer_contact_phone': 'None'
-                    , 'customer_contact_mobile': order.contact_mobile
-                    , 'customer_contact_email': str(order.contact_email)
-                    , 'customer_contact_ip': str(get_ip(request)) if get_ip(request) else "None"
-                    , 'customer_language': 'tr'
-                    , 'installment': 'true'
-                }
+                # TODO fix these values
+                'api_id': IYZICO_API_KEY
+                , 'secret': IYZICO_SECRET
+                , 'external_id': order.external_id
+                , 'mode': 'live'
+                , 'type': 'CC.DB'
+                , 'return_url': SITE_URL + reverse("multify_app.views.after_payment_page")
+                , 'amount': amount
+                , 'currency': form.cleaned_data["form_currency"]
+                , 'descriptor': ''
+                , 'item_id_1': 'foursquare_device'
+                , 'item_name_1': 'Multify Device'
+                , 'item_unit_quantity_1': str(order.order_count)
+                , 'item_unit_amount_1': '1'
+                , 'customer_first_name': order.first_name.encode('utf-8')
+                , 'customer_last_name': order.last_name.encode('utf-8')
+                , 'customer_company_name': order.company_name.encode('utf-8')
+                , 'customer_shipping_address_line_1': order.shipping_address.encode('utf-8')
+                , 'customer_shipping_address_line_2': order.shipping_address_2.encode('utf-8')
+                , 'customer_shipping_address_zip': order.shipping_zip.encode('utf-8')
+                , 'customer_shipping_address_city': order.shipping_city.encode('utf-8')
+                , 'customer_shipping_address_state': order.shipping_state.encode('utf-8')
+                , 'customer_shipping_address_country': order.shipping_country.name
+                , 'customer_billing_address_line_1': order.billing_address.encode('utf-8')
+                , 'customer_billing_address_line_2': order.billing_address_2.encode('utf-8')
+                , 'customer_billing_address_zip': order.billing_zip.encode('utf-8')
+                , 'customer_billing_address_city': order.billing_city.encode('utf-8')
+                , 'customer_billing_address_state': order.billing_state.encode('utf-8')
+                , 'customer_billing_address_country': order.billing_country.name
+                , 'customer_contact_phone': 'None'
+                , 'customer_contact_mobile': order.contact_mobile
+                , 'customer_contact_email': str(order.contact_email)
+                , 'customer_contact_ip': str(get_ip(request)) if get_ip(request) else "None"
+                , 'customer_language': 'tr'
+                , 'installment': 'true'
+            }
             resp = urllib2.urlopen('https://api.iyzico.com/v2/create', urllib.urlencode(data))
             resp_dict = json.loads(resp.read())
             if "response" in resp_dict and resp_dict['response']['state'] == "success":
                 order.save()
                 return render(request, 'payment.html',
-                              {"order": order, "token": resp_dict['transaction_token'], "amount": int(float(amount))/100, "base_amount": base_amount, "cur_text": currency_text, "without_shipment":without_shipment,"shipment_cost":shipment_cost,
-                              "full_shipment": full_shipment})
+                              {"order": order, "token": resp_dict['transaction_token'],
+                               "amount": int(float(amount)) / 100, "base_amount": base_amount,
+                               "cur_text": currency_text, "without_shipment": without_shipment,
+                               "shipment_cost": shipment_cost,
+                               "full_shipment": full_shipment})
             else:
                 print resp_dict
                 order.admin_comment = "ERROR: " + str(resp_dict)
                 order.save()
-                return render(request, 'order.html', {"form": form, "message": "Error while connecting to payment system:" + str(resp_dict)})
+                rec = ActivityRecord(type="PAYMENT HATA(before Payment)", content=str(resp_dict))
+                rec.save()
+                return render(request, 'order.html',
+                              {"form": form, "message": "Error while connecting to payment system:" + str(resp_dict)})
         else:
             print "not valid", form.errors
-            return render(request, 'order.html', {"form": form, "message" : message})
+            return render(request, 'order.html', {"form": form, "message": message})
     else:
         return render(request, 'order.html', {"form": MultifyOrderForm(), "message": message})
+
 
 @csrf_exempt
 def after_payment_page(request):
@@ -388,11 +469,13 @@ def after_payment_page(request):
                 if data_as_dict['response']['state'] == "success":
                     data_as_dict = data_as_dict["transaction"]
                 else:
+                    rec = ActivityRecord(type="PAYMENT HATA(After Payment)", content=str(data_as_dict))
+                    rec.save()
                     return order_form(request, "Payment Server error" + str(data_as_dict))
             except ValueError, e:
                 return order_form(request, str(e))
 
-            print "OK",data_as_dict
+            print "OK", data_as_dict
             external_id = data_as_dict['external_id']
             the_rec = MultifyOrder.objects.filter(external_id=external_id)
             if len(the_rec) > 0:
@@ -406,8 +489,8 @@ def after_payment_page(request):
                 order.save()
 
                 # try:
-                #     email = EmailMessage('Order Successful', 'Payment successfully, from ' + order.first_name + " " + order.last_name, to=['akcoraberkay@gmail.com'])
-                #     email.send()
+                # email = EmailMessage('Order Successful', 'Payment successfully, from ' + order.first_name + " " + order.last_name, to=['akcoraberkay@gmail.com'])
+                # email.send()
                 #
                 #     email = EmailMessage('Order Successful - Odeme Basarili', 'Thank you, ' + order.first_name + " " + order.last_name +"\nYour Transaction ID is: " + order.transaction_id, to=[order.contact_email])
                 #     email.send()
