@@ -66,7 +66,7 @@ class Subscriber(models.Model):
 
 class ActivityRecord(models.Model):
     type = models.CharField(max_length=30,blank=False,null=False, verbose_name=_("Type"))
-    content = models.CharField(max_length=255,blank=False,null=False, verbose_name=_("Data"))
+    content = models.TextField(blank=False,null=False, verbose_name=_("Data"))
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 
