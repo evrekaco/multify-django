@@ -8,6 +8,8 @@ from django.core.urlresolvers import reverse
 import foursquare
 from multify_app.models import Multify, CheckinRecord
 import django_project.settings
+import gc
+import pprint
 
 
 class Command(BaseCommand):
@@ -77,5 +79,8 @@ class Command(BaseCommand):
                         multify.last_updated = datetime.now(tz=timezone.get_current_timezone())
                     multify.save()
                 print "\n"
+
+            print "\nCURRENT GARBAGES:"
+            pprint.pprint(gc.garbage)
             print "\n\n"
             sleep(10)
