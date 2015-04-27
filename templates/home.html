@@ -77,8 +77,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            {% get_current_language as LANGUAGE_CODE %}
             <a class="navbar-brand" href="#" id="home"><img id="multify-logo" alt="Brand"
-                                                            src="{% static 'img/logo.png' %}"/></a>
+                                                            src={% if LANGUAGE_CODE == "tr" %}"{% static 'img/logo.png' %}"{% else %}
+                                                                "{% static 'img/multify_logo_siyahi_1.png' %}"{% endif %}/></a>
 
         </div>
         <div class="collapse navbar-collapse" id="collapsing-section">
@@ -104,7 +106,8 @@
                 <li>
                     <button class="btn btn-xs btn-red navbar-btn home-button visible-lg visible-md visible-sm"
                             id="pre-purchase"><p class="banner">{% trans "Order Now" %}</p></button>
-                    <a href="{% url "multify_app.views.order_form" %}" id="pre-purchase" class="visible-xs"><p class="banner">{% trans "Order" %}</p></a>
+                    <a href="{% url "multify_app.views.order_form" %}" id="pre-purchase" class="visible-xs"><p
+                            class="banner">{% trans "Order" %}</p></a>
                 </li>
 
                 <li>
@@ -239,6 +242,7 @@
 <div class="container-fluid">
     <div class="row" style="margin-top:25px; margin-bottom:25px">
         <h1 class="heading" id="sizes" style="margin-bottom:50px"><b>{% trans "TECHNICAL SPECIFICATIONS" %}</b></h1>
+
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 vertical-align2">
             <img src="{% static 'img/multify_size2.png' %}" class="center-block img-responsive"/>
         </div>
@@ -251,11 +255,14 @@
 <div class="container-fluid">
     <div class="row" style="margin-top:25px; margin-bottom:25px">
         <h1 class="heading" id="sizes" style="margin-bottom:50px"><b>{% trans "PRICING" %}</b></h1>
+
         <div class="">
             {% if LANGUAGE_CODE == "tr" %}
-                <img src="{% static 'img/Multify__digital_fiyat_listesi-01.jpg' %}" class="center-block img-responsive"/>
+                <img src="{% static 'img/Multify__digital_fiyat_listesi-01.jpg' %}"
+                     class="center-block img-responsive"/>
             {% else %}
-                <img src="{% static 'img/Multify__digital_fiyat_listesi-eng.jpg' %}" class="center-block img-responsive"/>
+                <img src="{% static 'img/Multify__digital_fiyat_listesi-eng.jpg' %}"
+                     class="center-block img-responsive"/>
             {% endif %}
         </div>
     </div>
@@ -333,7 +340,7 @@
                     </li>
                 </ul>
                 <img src="{% static 'img/visa-mastercard.png' %}" id="footer-logo" class="center-block img-responsive"
-                         style="padding: 15px; max-height: 70px;"/>
+                     style="padding: 15px; max-height: 70px;"/>
             </div>
         </div>
     </div>
