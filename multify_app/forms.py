@@ -90,7 +90,7 @@ class MultifyOrderForm(forms.ModelForm):
             self.fields['form_currency'].initial = "TRY"
             self.fields['shipping_country'].choices = [x for x in list(countries) if x[0]=='TR']
             self.fields['order_count'].choices = [
-                (x, str(x) + " x 1499TL = " + str(1499 * x) + "TL + Kargo Ücreti + KDV") for x in range(1, 6)]
+                (x, str(x) + " x 1699TL = " + str(1699 * x) + "TL + Kargo Ücreti + KDV") for x in range(1, 6)]
         else:
             self.fields['form_currency'].initial = "USD"
             self.fields['order_count'].choices = [(x, str(x) + " x 700$ = " + str(700 * x) + "$ + Shipment") for x in

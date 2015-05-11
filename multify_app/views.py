@@ -381,10 +381,10 @@ def order_form(request, message=None):
                 print "error at currency parsing", str(e)
 
             if form.cleaned_data["form_currency"] == "TRY":
-                amount = str(((1800 + shipment_cost) * 100) * order.order_count)
-                base_amount = 1800
+                amount = str(((2000 + shipment_cost) * 100) * order.order_count)
+                base_amount = 2000
                 currency_text = "TL"
-                without_shipment = order.order_count * 1800
+                without_shipment = order.order_count * 2000
                 full_shipment = order.order_count * shipment_cost
                 print order.order_count
             else:
