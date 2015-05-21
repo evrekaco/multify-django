@@ -43,6 +43,7 @@ class ActivityRecordAdmin(CustomModelAdminMixin, admin.ModelAdmin):
 
 @admin.register(CheckinRecord)
 class CheckinRecordAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    list_filter = ('multify__client__venue_name','checkin_date')
     pass
 
 

@@ -1,0 +1,12 @@
+Az one biri kayit birakti,
+Bunlarda detaylar:
+
+Venue Name: {{ m.venue_name }}
+
+Name: {{ m.name }}
+
+Email: {{ m.email }}
+
+Phone: {{ m.phone }}
+
+Message: {{ m.message }}

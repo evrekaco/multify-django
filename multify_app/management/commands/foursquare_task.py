@@ -83,4 +83,5 @@ class Command(BaseCommand):
             print "\nCURRENT GARBAGES:"
             pprint.pprint(gc.garbage)
             print "\n\n"
+            self.stdout.flush()
             sleep(10)

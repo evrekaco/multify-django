@@ -1,0 +1,17 @@
+Biri az once odeme yapti.
+
+Bunlarda detaylar..
+
+Name: {{ order.first_name }} {{ order.last_name }}
+
+Company : {{ order.company_name }}
+
+Siparis:
+
+Type : {{ order.get_multify_type_display }}
+
+Count : {{ order.order_count }}
+
+Paid : {{ order.paid_amount }} {{ order.currency }}
+
+Order Date : {{ order.date }}
