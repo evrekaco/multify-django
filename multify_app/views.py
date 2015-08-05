@@ -5,11 +5,12 @@ import urllib
 import urllib2
 import datetime
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 import foursquare
 from ipware.ip import get_ip
@@ -40,7 +41,19 @@ def save_subscriber_record(request):
     if request.method == "POST":
         form = SubscribeForm(request.POST)
         if form.is_valid():
-            form.save()
+            m = form.save()
+            msg_plain = render_to_string('email/subscriber_alert/email.txt', {'message': m})
+            msg_html = render_to_string('email/subscriber_alert/email.html', {'message': m})
+
+            send_mail(
+                'Yeni Subscriber/contact form dolduruldu.',
+                msg_plain,
+                'no-reply@multify.co',
+                ['info@multify.co', 'umutcan.duman@gmail.com', 'gokcennurlu@gmail.com'],
+                html_message=msg_html,
+                fail_silently=False
+            )
+
             return index(request)
         else:
             return index(request, form)
@@ -496,6 +509,18 @@ def after_payment_page(request):
                 #     email.send()
                 # except Exception:
                 #     pass
+
+                msg_plain_to_admin = render_to_string('email/order_complete_admin/email.txt', {'order': order})
+                msg_html_to_admin = render_to_string('email/order_complete_admin/email.html', {'order': order})
+
+                send_mail(
+                    'Yeni Subscriber/contact form dolduruldu.',
+                    msg_plain_to_admin,
+                    'no-reply@multify.co',
+                    ['info@multify.co', 'umutcan.duman@gmail.com',],
+                    html_message=msg_html_to_admin,
+                    fail_silently=True
+                )
 
                 return render(request, "success.html")
             else:
