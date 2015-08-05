@@ -45,8 +45,8 @@ class Command(BaseCommand):
         query_dict['multify'] = multify
         checkin_records = CheckinRecord.objects.filter(**query_dict).order_by('-checkin_date')
 
-        filename = multify.client.venue_name + "_records_" + (start_date if start_date else "NONE") + "_to_" + (
-        end_date if end_date else "NONE")
+        filename = multify.client.venue_name + "_records_" + (str(start_date) if start_date else "NONE") + "_to_" + (
+        str(end_date) if end_date else "NONE")
         csvwriter = csv.writer(open("%s.csv" % filename, 'wb'))
         headers = ['name', 'surname', 'fsq_id', 'checkin_date', 'gender']
         csvwriter.writerow(headers)
